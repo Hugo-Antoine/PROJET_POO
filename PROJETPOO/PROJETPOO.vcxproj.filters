@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien\class">
+      <UniqueIdentifier>{36d37fa2-a90a-4d35-88e8-7109dc12d80a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Forms">
+      <UniqueIdentifier>{c79782ba-371e-43e3-90fc-3ad91296e4f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\class">
+      <UniqueIdentifier>{4a8bea37-2e11-4bd9-a2de-42d5f8e16720}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\SQL_CMD">
+      <UniqueIdentifier>{c207d3d3-af1d-4e09-b99f-9e0e17327b47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\SQL_CMD">
+      <UniqueIdentifier>{63452465-e9cb-4dd7-a32e-a6c56436b849}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>Ressourcendateien</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Form1.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandeForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PersonnelForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="StockForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="adresse.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="Personnel.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="SQL_CMD.h">
+      <Filter>Headerdateien\SQL_CMD</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientForm.cpp">
+      <Filter>Quelldateien\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="Form1.cpp">
+      <Filter>Quelldateien\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="PersonnelForm.cpp">
+      <Filter>Quelldateien\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandeForm.cpp">
+      <Filter>Quelldateien\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="StockForm.cpp">
+      <Filter>Quelldateien\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="CppCLR_WinformsProjekt.cpp">
+      <Filter>Quelldateien\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="Personnel.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="adresse.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="SQL_CMD.cpp">
+      <Filter>Quelldateien\SQL_CMD</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="app.ico">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
