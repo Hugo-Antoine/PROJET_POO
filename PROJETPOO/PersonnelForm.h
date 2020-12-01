@@ -37,48 +37,24 @@ namespace PROJETPOO {
 		}
 
 	private: System::Windows::Forms::DataGridView^ dataGridView1;
-	protected:
 	private: System::Windows::Forms::Label^ Client;
 	private: System::Windows::Forms::Button^ Ajouter;
 	private: System::Windows::Forms::Button^ Modifier;
 	private: System::Windows::Forms::Button^ Supprimer;
-	private: System::Windows::Forms::TextBox^ nomP_tb;
+	private: System::Windows::Forms::TextBox^ nom_tb;
+	private: System::Windows::Forms::TextBox^ prenom_tb;
 
-	private: System::Windows::Forms::TextBox^ prenomP_tb;
-
-	private: System::Windows::Forms::TextBox^ deP_tb;
-
-	private: System::Windows::Forms::TextBox^ adresseP_tb;
-
-	private: System::Windows::Forms::TextBox^ nsP_tb;
-
-
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::TextBox^ de_tb;
+	private: System::Windows::Forms::TextBox^ adresse_tb;
+	private: System::Windows::Forms::TextBox^ ns_tb;
 	private: System::Windows::Forms::Label^ nom;
 	private: System::Windows::Forms::Label^ prenom;
-
 	private: System::Windows::Forms::Label^ de;
 	private: System::Windows::Forms::Label^ adresse;
 	private: System::Windows::Forms::Label^ ns;
-
 	private: System::Windows::Forms::Label^ ps;
-	private: System::Windows::Forms::TextBox^ psP_tb;
-	private: System::Windows::Forms::Button^ validerP;
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::TextBox^ ps_tb;
+	private: System::Windows::Forms::Button^ valider;
 
 	private:
 		/// <summary>
@@ -98,19 +74,19 @@ namespace PROJETPOO {
 			this->Ajouter = (gcnew System::Windows::Forms::Button());
 			this->Modifier = (gcnew System::Windows::Forms::Button());
 			this->Supprimer = (gcnew System::Windows::Forms::Button());
-			this->nomP_tb = (gcnew System::Windows::Forms::TextBox());
-			this->prenomP_tb = (gcnew System::Windows::Forms::TextBox());
-			this->deP_tb = (gcnew System::Windows::Forms::TextBox());
-			this->adresseP_tb = (gcnew System::Windows::Forms::TextBox());
-			this->nsP_tb = (gcnew System::Windows::Forms::TextBox());
+			this->nom_tb = (gcnew System::Windows::Forms::TextBox());
+			this->prenom_tb = (gcnew System::Windows::Forms::TextBox());
+			this->de_tb = (gcnew System::Windows::Forms::TextBox());
+			this->adresse_tb = (gcnew System::Windows::Forms::TextBox());
+			this->ns_tb = (gcnew System::Windows::Forms::TextBox());
 			this->nom = (gcnew System::Windows::Forms::Label());
 			this->prenom = (gcnew System::Windows::Forms::Label());
 			this->de = (gcnew System::Windows::Forms::Label());
 			this->adresse = (gcnew System::Windows::Forms::Label());
 			this->ns = (gcnew System::Windows::Forms::Label());
 			this->ps = (gcnew System::Windows::Forms::Label());
-			this->psP_tb = (gcnew System::Windows::Forms::TextBox());
-			this->validerP = (gcnew System::Windows::Forms::Button());
+			this->ps_tb = (gcnew System::Windows::Forms::TextBox());
+			this->valider = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -139,6 +115,7 @@ namespace PROJETPOO {
 			this->Ajouter->TabIndex = 2;
 			this->Ajouter->Text = L"Ajouter";
 			this->Ajouter->UseVisualStyleBackColor = true;
+			this->Ajouter->Click += gcnew System::EventHandler(this, &PersonnelForm::Ajouter_Click);
 			// 
 			// Modifier
 			// 
@@ -148,6 +125,7 @@ namespace PROJETPOO {
 			this->Modifier->TabIndex = 3;
 			this->Modifier->Text = L"Modifier";
 			this->Modifier->UseVisualStyleBackColor = true;
+			this->Modifier->Click += gcnew System::EventHandler(this, &PersonnelForm::Modifier_Click);
 			// 
 			// Supprimer
 			// 
@@ -158,40 +136,40 @@ namespace PROJETPOO {
 			this->Supprimer->Text = L"Supprimer";
 			this->Supprimer->UseVisualStyleBackColor = true;
 			// 
-			// nomP_tb
+			// nom_tb
 			// 
-			this->nomP_tb->Location = System::Drawing::Point(48, 511);
-			this->nomP_tb->Name = L"nomP_tb";
-			this->nomP_tb->Size = System::Drawing::Size(100, 20);
-			this->nomP_tb->TabIndex = 5;
+			this->nom_tb->Location = System::Drawing::Point(48, 511);
+			this->nom_tb->Name = L"nom_tb";
+			this->nom_tb->Size = System::Drawing::Size(100, 20);
+			this->nom_tb->TabIndex = 5;
 			// 
-			// prenomP_tb
+			// prenom_tb
 			// 
-			this->prenomP_tb->Location = System::Drawing::Point(187, 511);
-			this->prenomP_tb->Name = L"prenomP_tb";
-			this->prenomP_tb->Size = System::Drawing::Size(100, 20);
-			this->prenomP_tb->TabIndex = 6;
+			this->prenom_tb->Location = System::Drawing::Point(187, 511);
+			this->prenom_tb->Name = L"prenom_tb";
+			this->prenom_tb->Size = System::Drawing::Size(100, 20);
+			this->prenom_tb->TabIndex = 6;
 			// 
-			// deP_tb
+			// de_tb
 			// 
-			this->deP_tb->Location = System::Drawing::Point(325, 511);
-			this->deP_tb->Name = L"deP_tb";
-			this->deP_tb->Size = System::Drawing::Size(100, 20);
-			this->deP_tb->TabIndex = 7;
+			this->de_tb->Location = System::Drawing::Point(325, 511);
+			this->de_tb->Name = L"de_tb";
+			this->de_tb->Size = System::Drawing::Size(100, 20);
+			this->de_tb->TabIndex = 7;
 			// 
-			// adresseP_tb
+			// adresse_tb
 			// 
-			this->adresseP_tb->Location = System::Drawing::Point(472, 511);
-			this->adresseP_tb->Name = L"adresseP_tb";
-			this->adresseP_tb->Size = System::Drawing::Size(100, 20);
-			this->adresseP_tb->TabIndex = 8;
+			this->adresse_tb->Location = System::Drawing::Point(472, 511);
+			this->adresse_tb->Name = L"adresse_tb";
+			this->adresse_tb->Size = System::Drawing::Size(100, 20);
+			this->adresse_tb->TabIndex = 8;
 			// 
-			// nsP_tb
+			// ns_tb
 			// 
-			this->nsP_tb->Location = System::Drawing::Point(609, 511);
-			this->nsP_tb->Name = L"nsP_tb";
-			this->nsP_tb->Size = System::Drawing::Size(100, 20);
-			this->nsP_tb->TabIndex = 9;
+			this->ns_tb->Location = System::Drawing::Point(609, 511);
+			this->ns_tb->Name = L"ns_tb";
+			this->ns_tb->Size = System::Drawing::Size(100, 20);
+			this->ns_tb->TabIndex = 9;
 			// 
 			// nom
 			// 
@@ -247,40 +225,41 @@ namespace PROJETPOO {
 			this->ps->TabIndex = 16;
 			this->ps->Text = L"prenom superieur";
 			// 
-			// psP_tb
+			// ps_tb
 			// 
-			this->psP_tb->Location = System::Drawing::Point(739, 510);
-			this->psP_tb->Name = L"psP_tb";
-			this->psP_tb->Size = System::Drawing::Size(100, 20);
-			this->psP_tb->TabIndex = 17;
+			this->ps_tb->Location = System::Drawing::Point(739, 510);
+			this->ps_tb->Name = L"ps_tb";
+			this->ps_tb->Size = System::Drawing::Size(100, 20);
+			this->ps_tb->TabIndex = 17;
 			// 
-			// validerP
+			// valider
 			// 
-			this->validerP->Location = System::Drawing::Point(863, 507);
-			this->validerP->Name = L"validerP";
-			this->validerP->Size = System::Drawing::Size(75, 23);
-			this->validerP->TabIndex = 18;
-			this->validerP->Text = L"Valider";
-			this->validerP->UseVisualStyleBackColor = true;
+			this->valider->Location = System::Drawing::Point(863, 507);
+			this->valider->Name = L"valider";
+			this->valider->Size = System::Drawing::Size(75, 23);
+			this->valider->TabIndex = 18;
+			this->valider->Text = L"Valider";
+			this->valider->UseVisualStyleBackColor = true;
+			this->valider->Click += gcnew System::EventHandler(this, &PersonnelForm::valider_Click);
 			// 
 			// PersonnelForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(970, 550);
-			this->Controls->Add(this->validerP);
-			this->Controls->Add(this->psP_tb);
+			this->Controls->Add(this->valider);
+			this->Controls->Add(this->ps_tb);
 			this->Controls->Add(this->ps);
 			this->Controls->Add(this->ns);
 			this->Controls->Add(this->adresse);
 			this->Controls->Add(this->de);
 			this->Controls->Add(this->prenom);
 			this->Controls->Add(this->nom);
-			this->Controls->Add(this->nsP_tb);
-			this->Controls->Add(this->adresseP_tb);
-			this->Controls->Add(this->deP_tb);
-			this->Controls->Add(this->prenomP_tb);
-			this->Controls->Add(this->nomP_tb);
+			this->Controls->Add(this->ns_tb);
+			this->Controls->Add(this->adresse_tb);
+			this->Controls->Add(this->de_tb);
+			this->Controls->Add(this->prenom_tb);
+			this->Controls->Add(this->nom_tb);
 			this->Controls->Add(this->Supprimer);
 			this->Controls->Add(this->Modifier);
 			this->Controls->Add(this->Ajouter);
@@ -298,17 +277,94 @@ namespace PROJETPOO {
 
 	private: System::Void PersonnelForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		this->nom->Hide();
-		this->nomP_tb->Hide();
+		this->nom_tb->Hide();
 		this->prenom->Hide();
-		this->prenomP_tb->Hide();
-		this->ddn->Hide();
-		this->ddn_tb->Hide();
-		this->af->Hide();
-		this->af_tb->Hide();
-		this->al->Hide();
-		this->al_tb->Hide();
-		this->ValiderP->Hide();
-
+		this->prenom_tb->Hide();
+		this->de->Hide();
+		this->de_tb->Hide();
+		this->adresse->Hide();
+		this->adresse_tb->Hide();
+		this->ns->Hide();
+		this->ns_tb->Hide();
+		this->ps->Hide();
+		this->ps_tb->Hide();
+		this->valider->Hide();
 	}
+private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	this->nom_tb->Text = "";
+	this->prenom_tb->Text = "";
+	this->de_tb->Text = "";
+	this->adresse_tb->Text = "";
+	this->ns_tb->Text = "";
+	this->ps_tb->Text = "";
+
+	this->nom->Show();
+	this->nom_tb->Show();
+	this->prenom->Show();
+	this->prenom_tb->Show();
+	this->de->Show();
+	this->de_tb->Show();
+	this->adresse->Show();
+	this->adresse_tb->Show();
+	this->ns->Show();
+	this->ns_tb->Show();
+	this->ps->Show();
+	this->ps_tb->Show();
+	this->valider->Show();
+}
+private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	array<Personnel^>^ personnels = Personnel::getPersonnels();
+
+	this->nom_tb->Text = personnels[0]->getNom();
+	this->prenom_tb->Text = personnels[0]->getPrenom();
+	this->de_tb->Text = personnels[0]->getDe();
+	this->adresse_tb->Text = personnels[0]->getNom();
+	this->ns_tb->Text = personnels[0]->getNom();
+	this->ps_tb->Text = personnels[0]->getNom();
+
+	this->nom->Show();
+	this->nom_tb->Show();
+	this->prenom->Show();
+	this->prenom_tb->Show();
+	this->de->Show();
+	this->de_tb->Show();
+	this->adresse->Show();
+	this->adresse_tb->Show();
+	this->ns->Show();
+	this->ns_tb->Show();
+	this->ps->Show();
+	this->ps_tb->Show();
+	this->valider->Show();
+}
+
+private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	this->nom->Hide();
+	this->nom_tb->Hide();
+	this->prenom->Hide();
+	this->prenom_tb->Hide();
+	this->de->Hide();
+	this->de_tb->Hide();
+	this->adresse->Hide();
+	this->adresse_tb->Hide();
+	this->ns->Hide();
+	this->ns_tb->Hide();
+	this->ps->Hide();
+	this->ps_tb->Hide();
+	this->valider->Hide();
+
+	Personnel^ person = gcnew Personnel();
+
+	person->setNom(Convert::ToString(this->nom_tb->Text));
+	person->setPrenom(Convert::ToString(this->prenom_tb->Text));
+	person->setDe(Convert::ToString(this->de_tb->Text));
+	person->setIdAdresse(Convert::ToInt32(3));
+	person->setIdPersonnel(Convert::ToInt32(1));
+
+	person->persist();
+
+}
 };
 }

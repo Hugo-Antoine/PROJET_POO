@@ -37,7 +37,7 @@
     {
         return this->nom;
     }
-    void Personnel::setPrenom(String^ nom)
+    void Personnel::setPrenom(String^ prenom)
     {
         this->prenom = prenom;
     }
@@ -45,7 +45,7 @@
     {
         return this->prenom;
     }
-    void Personnel::setDe(String^ nom)
+    void Personnel::setDe(String^ de)
     {
         this->de = de;
     }
@@ -53,7 +53,7 @@
     {
         return this->de;
     }
-    void Personnel::setIdAdresse(int)
+    void Personnel::setIdAdresse(int id_adresse)
     {
         this->id_adresse = id_adresse;
     }
@@ -62,7 +62,7 @@
         return this->id_adresse;
     }
 
-    void Personnel::setIdPersonnel(int)
+    void Personnel::setIdPersonnel(int id_personnel)
     {
         this->id_personnel = id_personnel;
     }
@@ -97,9 +97,10 @@
         SQL_CMD^ connexion = gcnew SQL_CMD();
         if (this->id == -1)
         {
+
             //Insert
-            this->id = connexion->insert("INSERT INTO " + tableName + " (nom, prenom, date_embauche, supprimer, id_adresse, id_personnel) " +
-                "VALUES('" + this->getNom() + "','" + this->getPrenom()  + "','" + this->getDe() + "','false','" + this->getIdAdresse() + "','" + this->getIdPersonnel() + "');SELECT @@IDENTITY;");
+            this->id = connexion->insert("INSERT INTO " + tableName +
+                " VALUES('" + this->getNom() + "','" + this->getPrenom() + "','" + this->getDe() + "','false','" + this->getIdAdresse() + "','" + this->getIdPersonnel() + "');SELECT @@IDENTITY;");
         }
         else
         {

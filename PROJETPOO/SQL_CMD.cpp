@@ -6,7 +6,7 @@
     {
         this->rq_sql = "RIEN";
         this->credentials = "Data Source=PC-HUGO;" +
-            "Initial Catalog=PP;" +
+            "Initial Catalog=a;" +
             "Persist Security Info=True;" +
             "User ID=sa2;" +
             "Password=azerty123";
