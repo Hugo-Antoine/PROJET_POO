@@ -71,7 +71,7 @@
         return this->id_personnel;
     }
 
-    array<Personnel^>^ Personnel::getPersonnels()
+    array<Personnel^>^ Personnel::getPersonnel()
     {
         String^ tableName = Personnel::getTableName();
         //Requête pour récupérer à partir de Sql Server 

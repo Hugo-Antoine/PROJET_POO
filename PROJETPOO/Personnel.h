@@ -27,7 +27,7 @@ public:
     void setIdPersonnel(int);
     int getIdPersonnel();
 
-    static array<Personnel^>^ getPersonnels();
+    static array<Personnel^>^ getPersonnel();
     void persist();
     void Delete();
     static String^ getTableName();

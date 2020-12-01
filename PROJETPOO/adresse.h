@@ -16,18 +16,16 @@ public:
     void setID(int);
     int getID();
     void setLigne1(String^);
-    String^ getNom();
-    void setPrenom(String^);
-    String^ getPrenom();
-    void setDe(String^);
-    String^ getDe();
-    void setIdAdresse(int);
-    int getIdAdresse();
-    void setIdPersonnel(int);
-    int getIdPersonnel();
+    String^ getLigne1();
+    void setPays(String^);
+    String^ getPays();
+    void setVille(String^);
+    String^ getVille();
+    void setCp(String^);
+    String^ getCp();
 
-    static array<Personnel^>^ getPersonnels();
-    void persist();
-    void Delete();
+
+    static array<Adresse^>^ getAdresse();
+    int persist();
     static String^ getTableName();
 };
