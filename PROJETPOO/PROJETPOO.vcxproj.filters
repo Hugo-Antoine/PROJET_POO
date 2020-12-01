@@ -28,6 +28,12 @@
     <Filter Include="Quelldateien\SQL_CMD">
       <UniqueIdentifier>{63452465-e9cb-4dd7-a32e-a6c56436b849}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\others">
+      <UniqueIdentifier>{104b15a0-d6a6-4dd9-a092-91211947b350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\others">
+      <UniqueIdentifier>{b32c7157-ebfd-47b6-b19c-1284f4967046}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
@@ -35,12 +41,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Form1.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -65,14 +65,38 @@
     <ClInclude Include="SQL_CMD.h">
       <Filter>Headerdateien\SQL_CMD</Filter>
     </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="Commande.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Headerdateien\others</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Headerdateien\others</Filter>
+    </ClInclude>
+    <ClInclude Include="Article.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="Palier_remise.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="Paiement.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="Adresse_livraison.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="Adresse_facturation.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
+    <ClInclude Include="Commande_article.h">
+      <Filter>Headerdateien\class</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="ClientForm.cpp">
       <Filter>Quelldateien\Forms</Filter>
     </ClCompile>
@@ -99,6 +123,36 @@
     </ClCompile>
     <ClCompile Include="SQL_CMD.cpp">
       <Filter>Quelldateien\SQL_CMD</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="Commande.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Quelldateien\others</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Quelldateien\others</Filter>
+    </ClCompile>
+    <ClCompile Include="Article.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="Palier_remise.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="Paiement.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="Adresse_livraison.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="Adresse_facturation.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="Commande_article.cpp">
+      <Filter>Quelldateien\class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

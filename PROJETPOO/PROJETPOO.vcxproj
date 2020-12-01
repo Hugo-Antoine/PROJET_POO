@@ -144,15 +144,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adresse.h" />
+    <ClInclude Include="Adresse_facturation.h" />
+    <ClInclude Include="Adresse_livraison.h" />
+    <ClInclude Include="Article.h" />
+    <ClInclude Include="Client.h" />
     <ClInclude Include="ClientForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Commande.h" />
     <ClInclude Include="CommandeForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Commande_article.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Paiement.h" />
+    <ClInclude Include="Palier_remise.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Personnel.h" />
     <ClInclude Include="PersonnelForm.h">
@@ -166,11 +174,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adresse.cpp" />
+    <ClCompile Include="Adresse_facturation.cpp" />
+    <ClCompile Include="Adresse_livraison.cpp" />
+    <ClCompile Include="Article.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientForm.cpp" />
+    <ClCompile Include="Commande.cpp" />
     <ClCompile Include="CommandeForm.cpp" />
+    <ClCompile Include="Commande_article.cpp" />
     <ClCompile Include="CppCLR_WinformsProjekt.cpp" />
     <ClCompile Include="Form1.cpp" />
+    <ClCompile Include="Paiement.cpp" />
+    <ClCompile Include="Palier_remise.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
