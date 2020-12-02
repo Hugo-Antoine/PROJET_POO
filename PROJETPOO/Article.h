@@ -8,7 +8,7 @@ private:
     int id;
     String^ name;
     String^ type_Article;
-    float TVA_rate;
+    double TVA_rate;
     int quantite_stock;
     int seuil_reapro;
 

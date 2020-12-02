@@ -10,6 +10,7 @@ private:
     String^ prenom;
     String^ ddn;
     String^ dpa;
+    
     bool supr;
 
 
@@ -30,6 +31,6 @@ public:
     bool getsupr();
     static array<Clients^>^ getClient();
     static array<Clients^>^ getClientActif();
-    void persist();
+    int persist();
     static String^ getTableName();
 };

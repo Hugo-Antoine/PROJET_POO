@@ -367,15 +367,15 @@ namespace PROJETPOO {
 		//On creer les colonnes de la table
 		//
 
-		personnelData->ColumnCount = 8;
-		personnelData->Columns[0]->Name = "Nom";
-		personnelData->Columns[1]->Name = "Prenom";
-		personnelData->Columns[2]->Name = "Date d'embauche";
-		personnelData->Columns[3]->Name = "Adresse";
-		personnelData->Columns[4]->Name = "Ville";
-		personnelData->Columns[5]->Name = "Code postal";
-		personnelData->Columns[6]->Name = "Pays";
-		personnelData->Columns[7]->Name = "Superieur";
+		this->personnelData->ColumnCount = 8;
+		this->personnelData->Columns[0]->Name = "Nom";
+		this->personnelData->Columns[1]->Name = "Prenom";
+		this->personnelData->Columns[2]->Name = "Date d'embauche";
+		this->personnelData->Columns[3]->Name = "Adresse";
+		this->personnelData->Columns[4]->Name = "Ville";
+		this->personnelData->Columns[5]->Name = "Code postal";
+		this->personnelData->Columns[6]->Name = "Pays";
+		this->personnelData->Columns[7]->Name = "Superieur";
 
 		//
 		//On remplit les colonnes avec les données de la bdd

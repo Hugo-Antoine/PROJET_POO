@@ -95,6 +95,9 @@
     <ClInclude Include="Commande_article.h">
       <Filter>Headerdateien\class</Filter>
     </ClInclude>
+    <ClInclude Include="modif_adresse_client.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientForm.cpp">
@@ -153,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="Commande_article.cpp">
       <Filter>Quelldateien\class</Filter>
+    </ClCompile>
+    <ClCompile Include="modif_adresse_client.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

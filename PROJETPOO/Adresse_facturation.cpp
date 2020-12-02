@@ -5,16 +5,17 @@
 Adresse_facturation::Adresse_facturation()
 {
     this->id = -1;
-    this->id_adresse = -1;
+    this->id_client = 0;
+    this->id_adresse = 0;
     this->suppr = 0;
-
 }
 
 Adresse_facturation::Adresse_facturation(DataRow^ DR)
 {
     this->id = Convert::ToInt32(DR->ItemArray[0]);
-    this->id_adresse = Convert::ToInt32(DR->ItemArray[1]);
-    this->suppr = Convert::ToBoolean(DR->ItemArray[2]);
+    this->id_client = Convert::ToInt32(DR->ItemArray[1]);
+    this->id_adresse = Convert::ToInt32(DR->ItemArray[2]);
+    this->suppr = Convert::ToBoolean(DR->ItemArray[3]);
 }
 
 void Adresse_facturation::setID(int id)
@@ -25,12 +26,21 @@ int Adresse_facturation::getID()
 {
     return this->id;
 }
-void Adresse_facturation::setID_adresse(int id_adresse)
+
+void Adresse_facturation::setIdClient(int id_client)
+{
+    this->id_client = id_client;
+}
+int Adresse_facturation::getIdClient()
+{
+    return this->id_client;
+}
+void Adresse_facturation::setIdAdresse(int id_adresse)
 {
     this->id_adresse = id_adresse;
 }
 
-int Adresse_facturation::getID_adresse()
+int Adresse_facturation::getIdAdresse()
 {
     return this->id_adresse;
 
@@ -46,8 +56,6 @@ bool Adresse_facturation::getsuppr()
     return this->suppr;
 
 }
-
-
 
 array<Adresse_facturation^>^ Adresse_facturation::getAdresse_facturation()
 {
@@ -67,26 +75,24 @@ array<Adresse_facturation^>^ Adresse_facturation::getAdresse_facturation()
 }
 String^ Adresse_facturation::getTableName()
 {
-    return "Adresse_facturation";
+    return "adresse_facturation";
 }
 void Adresse_facturation::persist()
 {
     String^ tableName = Adresse_facturation::getTableName();
     SQL_CMD^ connexion = gcnew SQL_CMD();
+
     if (this->id == -1)
     {
         //Insert
-        this->id = connexion->insert("INSERT INTO " + tableName + " (id_adresse, supprimer) " +
-            "VALUES('" + this->getID_adresse() + "','" + this->getsuppr() + "');SELECT @@IDENTITY;");
+        this->id = connexion->insert("INSERT INTO " + tableName  +
+            " VALUES('" + this->getIdClient() + "','" + this->getIdAdresse() + "','" + this->getsuppr() + "');SELECT @@IDENTITY;");
     }
     else
     {
         //Update
         connexion->update("UPDATE " + tableName +
-            "' SET id_adresse = '" + this->getID_adresse() + "' " +
-            "',suppr = '" + this->getsuppr()
-            + ");");
-
-        "WHERE(id = " + this->getID() + ");";
+            " SET id_client = '" + this->getIdClient() + "' ,id_adresse = '" + this->getIdAdresse() + "' ,supprimer = '" + this->getsuppr() +
+            "' WHERE(id = " + this->getID() + ");");
     }
 }

@@ -24,7 +24,6 @@ public:
     void setCp(String^);
     String^ getCp();
 
-
     static array<Adresse^>^ getAdresse();
     int persist();
     static String^ getTableName();

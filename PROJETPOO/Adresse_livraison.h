@@ -6,6 +6,7 @@ using namespace System;
 ref class Adresse_livraison {
 private:
     int id;
+    int id_adresse;
     int id_client;
     bool suppr;
 
@@ -15,8 +16,11 @@ public:
     Adresse_livraison(DataRow^ DR);
     void setID(int);
     int getID();
+    void setID_adresse(int);
+    int getID_adresse(); 
     void setID_client(int);
     int getID_client();
+ 
     void setsuppr(bool);
     bool getsuppr();
 

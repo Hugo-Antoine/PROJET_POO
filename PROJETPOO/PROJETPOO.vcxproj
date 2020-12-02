@@ -159,6 +159,9 @@
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="modif_adresse_client.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Paiement.h" />
     <ClInclude Include="Palier_remise.h" />
     <ClInclude Include="pch.h" />
@@ -185,6 +188,7 @@
     <ClCompile Include="Commande_article.cpp" />
     <ClCompile Include="CppCLR_WinformsProjekt.cpp" />
     <ClCompile Include="Form1.cpp" />
+    <ClCompile Include="modif_adresse_client.cpp" />
     <ClCompile Include="Paiement.cpp" />
     <ClCompile Include="Palier_remise.cpp" />
     <ClCompile Include="pch.cpp">
@@ -217,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="modif_adresse_client.resx">
+      <DependentUpon>modif_adresse_client.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PersonnelForm.resx">
       <DependentUpon>PersonnelForm.h</DependentUpon>

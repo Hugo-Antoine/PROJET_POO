@@ -5,24 +5,37 @@
 Adresse_livraison::Adresse_livraison()
 {
     this->id = -1;
+    this->id_adresse = -1;
     this->id_client = -1;
     this->suppr = 0;
 }
 
 Adresse_livraison::Adresse_livraison(DataRow^ DR)
 {
+
     this->id = Convert::ToInt32(DR->ItemArray[0]);
-    this->id_client = Convert::ToInt32(DR->ItemArray[1]);
-    this->suppr = Convert::ToBoolean(DR->ItemArray[2]);
+    this->id_adresse = Convert::ToInt32(DR->ItemArray[1]);
+    this->id_client = Convert::ToInt32(DR->ItemArray[2]);
+    this->suppr = Convert::ToBoolean(DR->ItemArray[3]);
 }
 
 void Adresse_livraison::setID(int id)
 {
     this->id = id;
 }
+
 int Adresse_livraison::getID()
 {
     return this->id;
+}
+
+void Adresse_livraison::setID_adresse(int id)
+{
+    this->id_adresse = id;
+}
+int Adresse_livraison::getID_adresse()
+{
+    return this->id_adresse ;
 }
 void Adresse_livraison::setID_client(int id_client)
 {
@@ -64,7 +77,7 @@ array<Adresse_livraison^>^ Adresse_livraison::getAdresse_livraison()
 }
 String^ Adresse_livraison::getTableName()
 {
-    return "Adresse_livraison";
+    return "adresse_livraison";
 }
 void Adresse_livraison::persist()
 {
@@ -73,17 +86,14 @@ void Adresse_livraison::persist()
     if (this->id == -1)
     {
         //Insert
-        this->id = connexion->insert("INSERT INTO " + tableName + " (id_client, supprimer) " +
-            "VALUES('" + this->getID_client() + "','" + this->getsuppr() + "');SELECT @@IDENTITY;"); /*questio*/
+        this->id = connexion->insert("INSERT INTO " + tableName +
+            " VALUES('" + this->getID_adresse() + "','"+ this->getID_client() + "','" + this->getsuppr() + "');SELECT @@IDENTITY;"); /*questio*/
     }
     else
     {
         //Update
         connexion->update("UPDATE " + tableName +
-            "' SET id_client = '" + this->getID_client() + "' " +
-            "',suppr = '" + this->getsuppr()
-            + ");");
-
-        "WHERE(id = " + this->getID() + ");";
+            " SET adresse = '" + this->getID_adresse() + "' ,id_client = '" + this->getID_client() + "' ,suppr = '" + this->getsuppr() +
+            " WHERE(id = " + this->getID() + ");");
     }
 }

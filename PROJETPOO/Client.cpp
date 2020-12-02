@@ -19,6 +19,7 @@ Clients::Clients(DataRow^ DR)
     this->prenom = Convert::ToString(DR->ItemArray[2]);
     this->ddn = Convert::ToString(DR->ItemArray[3]);
     this->dpa = Convert::ToString(DR->ItemArray[4]);
+    this->supr = Convert::ToBoolean(DR->ItemArray[5]);
 }
 void Clients::setID(int id)
 {
@@ -59,7 +60,7 @@ String^ Clients::getddn()
 
 void Clients::setdpa(String^ dpa)
 {
-    this->ddn = dpa;
+    this->dpa = dpa;
 }
 
 String^ Clients::getdpa()
@@ -117,26 +118,22 @@ String^ Clients::getTableName()
 {
     return "client";
 }
-void Clients::persist()
+int Clients::persist()
 {
     String^ tableName = Clients::getTableName();
     SQL_CMD^ connexion = gcnew SQL_CMD();
     if (this->id == -1)
     {
         //Insert
-        this->id = connexion->insert("INSERT INTO " + tableName + " (nom, prenom, date_naissance, date_premier_achat, supprimer) " +
-            "VALUES('" + this->getNom() + "','" + this->getPrenom() + "','" + this->getddn() + "','" + this->getdpa() + "','" + this->getsupr() + "');SELECT @@IDENTITY;"); /*questio*/
+        this->id = connexion->insert("INSERT INTO " + tableName +
+            " VALUES('" + this->getNom() + "','" + this->getPrenom() + "','" + this->getddn() + "','" + this->getdpa() + "','" + this->getsupr() + "');SELECT @@IDENTITY;"); /*questio*/
     }
     else
     {
         //Update
-        connexion->update("UPDATE " + tableName +
-            "' SET nom = '" + this->getNom() + "' " +
-            "',prenom = '" + this->getPrenom() + " '" +
-            "' ,date_naissance = '" + this->getddn() + "'" +
-            "' ,date_premier_achat = '" + this->getdpa() + "'" +
-            "' ,supprimer = '" + this->getsupr() + ");");
-
-        "WHERE(id = " + this->getID() + ");";
+        connexion->update("UPDATE " + tableName + 
+            " SET nom = '" + this->getNom() +"',prenom = '" + this->getPrenom() +"' ,date_naissance = '" + this->getddn() +"' ,date_premier_achat = '" + this->getdpa() + "' ,supprimer = '" + this->getsupr() + "' " +
+            "WHERE(id = " + this->getID() + ");");
     }
+    return this->id;
 }
