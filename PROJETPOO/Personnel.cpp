@@ -24,8 +24,7 @@
         if (DR->IsNull("id_personnel"))
             this->id_personnel = 0;
         else 
-            this->id_personnel = Convert::ToInt32(DR->ItemArray[6]);
-            
+            this->id_personnel = Convert::ToInt32(DR->ItemArray[6]);     
     }
 
 
@@ -133,7 +132,7 @@
 
             //Insert
             this->id = connexion->insert("INSERT INTO " + tableName +
-                " VALUES('" + this->getNom() + "','" + this->getPrenom() + "','" + this->getDe() + "','" + this->getSupprimer() + "','" + this->getIdAdresse() + "','" + this->getIdPersonnel() + "');SELECT @@IDENTITY;");
+                " VALUES('" + this->getNom() + "','" + this->getPrenom() + "','" + this->getDe() + "','" + this->getSupprimer() + "','" + this->getIdAdresse() + "'," + (this->getIdPersonnel() == 0 ? "NULL" : Convert::ToString(this->getIdPersonnel())) + ");SELECT @@IDENTITY;");
         }
         else
         {

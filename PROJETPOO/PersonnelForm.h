@@ -364,12 +364,6 @@ namespace PROJETPOO {
 		this->valider->Hide();
 
 		//
-		//on creer la valeur aucun pour pouvoir ne pas avoir de superieur
-		//
-
-		this->SuperiorListe->Items->Add("aucun");
-
-		//
 		//On creer les colonnes de la table
 		//
 
@@ -418,6 +412,14 @@ namespace PROJETPOO {
 	}
 
 private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	//
+	//On clear la liste des superieur et on add aucun
+	//
+
+	this->SuperiorListe->Items->Clear();
+
+	this->SuperiorListe->Items->Add("aucun");
 
 	//
 	//On Set toute les textBox vide, le calendrier à la date d'ajourd'hui et le superieur à aucun et on dit qu'on est en train d'ajouter
@@ -474,6 +476,14 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	//
+	//On clear la liste des superieur et on add aucun
+	//
+
+	this->SuperiorListe->Items->Clear();
+
+	this->SuperiorListe->Items->Add("aucun");
+
+	//
 	//on creer un tableau  objet en local de personnels et d'adresses pour recuperer leur valeurs
 	//
 
@@ -484,8 +494,7 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	//on recupere l'id de la ligne selectionner
 	//
 
-	int idRow = personnelData->CurrentRow->Index;
-	int id = personnels[idRow]->getID();
+	int id = personnels[personnelData->CurrentRow->Index]->getID();
 
 	//
 	//On initialise les objets a null
@@ -536,7 +545,7 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 
 	//
 	//On afficher dans le SuperiorListe la liste de tout les superieurs 
-	//(ici tout les personnels puisqu'on crée un nouveaux personnel et que tout le monde peut etre son superieur)
+	//(ici toute les personne sauf la personne selectionnée)
 	//
 
 	Personnel^ pSup = nullptr;
@@ -544,7 +553,8 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	for (int i = 0; i < personnels->Length; i++)
 	{
 		pSup = personnels[i];
-		this->SuperiorListe->Items->Add(pSup->getNom() + " " + pSup->getPrenom());
+		if(pSup->getID() != id)
+			this->SuperiorListe->Items->Add(pSup->getNom() + " " + pSup->getPrenom());
 	}
 
 	//
@@ -564,12 +574,13 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	//On recupere le l'index du superieur de la personne
 	//
 
-	for (int i = 0; i < personnels->Length; i++)
+	for (int i = 0; i < personnels->Length-1; i++)
 	{
 		if (pSup->getNom() + " " + pSup->getPrenom() == this->SuperiorListe->GetItemText(this->SuperiorListe->Items[i])) {
 			index = i;
 		}
 	}
+	Debug::Write(index);
 
 	//
 	//On Set toute les valeurs a leur correspondance dans la BDD et on dit qu'on est en mode update
@@ -670,8 +681,7 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	//si on est en update 	
 	if (!insert) 
 	{ 
-		int idRow = personnelData->CurrentRow->Index;
-		int id = personnels[idRow]->getID();
+		int id = personnels[personnelData->CurrentRow->Index]->getID();
 		person->setID(id); 
 	}
 
@@ -735,8 +745,7 @@ private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^
 	//on met dans p l'objet personnel du personnel en question
 	//
 
-	int idRow = personnelData->CurrentRow->Index;
-	int id = personnelsActif[idRow]->getID();
+	int id = personnelsActif[personnelData->CurrentRow->Index]->getID();
 
 	//
 	//on check si le personnel est le superieur d'un autre personnel si oui on a pas le droit de le delete
@@ -796,6 +805,5 @@ private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^
 			personnelData->Rows->Add(p->getNom(), p->getPrenom(), p->getDe(), a->getLigne1(), a->getVille(), a->getCp(), a->getPays(), (p->getIdPersonnel() == 0 ? "NULL" : (pSup->getNom() + " " + pSup->getPrenom())));
 	}
 }
-
 };
 }

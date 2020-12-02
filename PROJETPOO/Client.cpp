@@ -2,16 +2,17 @@
 #include "Client.h"
 #include "SQL_CMD.h"
 
-Client::Client()
+Clients::Clients()
 {
     this->id = -1;
     this->nom = "";
     this->prenom = "";
     this->ddn = "";
     this->dpa = "";
+    this->supr = false;
 }
 
-Client::Client(DataRow^ DR)
+Clients::Clients(DataRow^ DR)
 {
     this->id = Convert::ToInt32(DR->ItemArray[0]);
     this->nom = Convert::ToString(DR->ItemArray[1]);
@@ -19,90 +20,106 @@ Client::Client(DataRow^ DR)
     this->ddn = Convert::ToString(DR->ItemArray[3]);
     this->dpa = Convert::ToString(DR->ItemArray[4]);
 }
-void Client::setID(int id)
+void Clients::setID(int id)
 {
     this->id = id;
 }
-int Client::getID()
+int Clients::getID()
 {
     return this->id;
 }
-void Client::setNom(String^ nom)
+void Clients::setNom(String^ nom)
 {
     this->nom = nom;
 }
-String^ Client::getNom()
+String^ Clients::getNom()
 {
     return this->nom;
 }
 
-void Client::setPrenom(String^ prenom)
+void Clients::setPrenom(String^ prenom)
 {
     this->prenom = prenom;
 }
-String^ Client::getPrenom()
+String^ Clients::getPrenom()
 {
     return this->prenom;
 }
 
-void Client::setddn(String^ ddn)
+void Clients::setddn(String^ ddn)
 {
     this->ddn = ddn;
 }
 
-String^ Client::getddn()
+String^ Clients::getddn()
 {
     return this->ddn;
 
 }
 
-void Client::setdpa(String^ dpa)
+void Clients::setdpa(String^ dpa)
 {
     this->ddn = dpa;
 }
 
-String^ Client::getdpa()
+String^ Clients::getdpa()
 {
     return this->dpa;
 
 }
 
-void Client::setsupr(bool supr)
+void Clients::setsupr(bool supr)
 {
     this->supr = supr;
 }
 
-bool Client::getsupr()
+bool Clients::getsupr()
 {
     return this->supr;
 
 }
 
-
-
-array<Client^>^ Client::getClient()
+array<Clients^>^ Clients::getClient()
 {
-    String^ tableName = Client::getTableName();
+    String^ tableName = Clients::getTableName();
     //Requête pour récupérer à partir de Sql Server 
     //le DataSet contenant les personnes
     SQL_CMD^ connexion = gcnew SQL_CMD();
     DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + ";", tableName);
 
     int size = ds->Tables[tableName]->Rows->Count;
-    array<Client^>^ Clients = gcnew array<Client^>(size);
+    array<Clients^>^ Client = gcnew array<Clients^>(size);
 
     //remplir le tableau personnes à partir des personnes récupérée dans DS.
     for (int i = 0; i < size; i++)
-        Clients[i] = gcnew Client(ds->Tables[tableName]->Rows[i]);
-    return Clients;
+        Client[i] = gcnew Clients(ds->Tables[tableName]->Rows[i]);
+    return Client;
 }
-String^ Client::getTableName()
+
+array<Clients^>^ Clients::getClientActif()
+{
+    String^ tableName = Clients::getTableName();
+    //Requête pour récupérer à partir de Sql Server 
+    //le DataSet contenant les personnes
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+    DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + " WHERE supprimer = 'false';", tableName);
+
+    int size = ds->Tables[tableName]->Rows->Count;
+    array<Clients^>^ Client = gcnew array<Clients^>(size);
+
+    //remplir le tableau personnes à partir des personnes récupérée dans DS.
+    for (int i = 0; i < size; i++)
+        Client[i] = gcnew Clients(ds->Tables[tableName]->Rows[i]);
+    return Client;
+}
+
+String^ Clients::getTableName()
 {
     return "client";
 }
-void Client::persist()
+void Clients::persist()
 {
-    String^ tableName = Client::getTableName();
+    String^ tableName = Clients::getTableName();
     SQL_CMD^ connexion = gcnew SQL_CMD();
     if (this->id == -1)
     {

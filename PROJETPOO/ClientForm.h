@@ -1,4 +1,5 @@
 #pragma once
+#include "Client.h"
 
 namespace PROJETPOO {
 
@@ -318,21 +319,7 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 	this->al_tb->Show();
 	this->valider->Show();
 }
-private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
-	//cacher tout
-	this->nom->Hide();
-	this->nom_tb->Hide();
-	this->prenom->Hide();
-	this->prenom_tb->Hide();
-	this->ddn->Hide();
-	this->ddn_tb->Hide();
-	this->af->Hide();
-	this->af_tb->Hide();
-	this->al->Hide();
-	this->al_tb->Hide();
-	this->valider->Hide();
-	//tout set dans la BDD
-}
+
 private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ e) {
 	//set tout avec les valeurs de la BDD
 	this->nom_tb->Text = "Antoine";
@@ -352,6 +339,25 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	this->al->Show();
 	this->al_tb->Show();
 	this->valider->Show();
+}
+
+private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
+	//cacher tout
+	this->nom->Hide();
+	this->nom_tb->Hide();
+	this->prenom->Hide();
+	this->prenom_tb->Hide();
+	this->ddn->Hide();
+	this->ddn_tb->Hide();
+	this->af->Hide();
+	this->af_tb->Hide();
+	this->al->Hide();
+	this->al_tb->Hide();
+	this->valider->Hide();
+	//tout set dans la BDD
+
+	Clients^ cli = gcnew Clients();
+
 }
 };
 }
