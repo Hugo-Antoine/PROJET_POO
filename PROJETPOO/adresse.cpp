@@ -89,7 +89,6 @@ int Adresse::persist()
         //Insert
         this->id = connexion->insert("INSERT INTO " + tableName +
             " VALUES('" + this->getLigne1() + "','" + this->getPays() + "','" + this->getVille() + "','" + this->getCp() + "');SELECT @@IDENTITY;");
-        return this->id;
     }
     else
     {
@@ -98,5 +97,6 @@ int Adresse::persist()
             " SET ligne1 = '" + this->getLigne1() + "' ,pays = '" + this->getPays() + "' ,ville = '" + this->getVille() + "' ,code_postal = " + this->getCp() +
             "WHERE(id = " + this->getID() + ");");
     }
+    return this->id;
 }
 

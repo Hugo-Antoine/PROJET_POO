@@ -9,7 +9,6 @@ Commande_article::Commande_article()
     this->quantite = 0;
     this->prix_unitaire_ht = 0;
     this->remise = 0;
-
 }
 
 Commande_article::Commande_article(DataRow^ DR)
@@ -40,12 +39,10 @@ int Commande_article::getID_commande()
     return this->id_commande;
 }
 
-
 void Commande_article::setQuantite(int quantite)
 {
     this->quantite = quantite;
 }
-
 
 int Commande_article::getQuantite()
 {

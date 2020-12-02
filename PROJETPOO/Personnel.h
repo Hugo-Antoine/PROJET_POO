@@ -8,6 +8,7 @@ private:
     String^ nom;
     String^ prenom;
     String^ de;
+    bool supprimer;
     int id_adresse;
     int id_personnel;
 
@@ -22,14 +23,15 @@ public:
     String^ getPrenom();
     void setDe(String^);
     String^ getDe();
+    void setSupprimer(bool);
+    bool getSupprimer();
     void setIdAdresse(int);
     int getIdAdresse();
     void setIdPersonnel(int);
     int getIdPersonnel();
-
     static array<Personnel^>^ getPersonnel();
+    static array<Personnel^>^ getPersonnelActif();
     void persist();
-    void Delete();
     static String^ getTableName();
 };
 
