@@ -6,7 +6,7 @@ using namespace System;
 ref class Article {
 private:
     int id;
-    String^ name;
+    String^ nom;
     String^ type_Article;
     double TVA_rate;
     int quantite_stock;
@@ -35,6 +35,6 @@ public:
 
 
     static array<Article^>^ getArticle();
-    void persist();
+    int persist();
     static String^ getTableName();
 };

@@ -25,6 +25,8 @@ public:
 
 
     static array<Adresse_facturation^>^ getAdresse_facturation();
+    static array<Adresse_facturation^>^ getAdresse_facturationActive();
+    static array<Adresse_facturation^>^ getAdresse_facturationActive(int);
     void persist();
     static String^ getTableName();
 };

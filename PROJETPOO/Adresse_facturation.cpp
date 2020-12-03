@@ -7,7 +7,7 @@ Adresse_facturation::Adresse_facturation()
     this->id = -1;
     this->id_client = 0;
     this->id_adresse = 0;
-    this->suppr = 0;
+    this->suppr = false;
 }
 
 Adresse_facturation::Adresse_facturation(DataRow^ DR)
@@ -73,6 +73,41 @@ array<Adresse_facturation^>^ Adresse_facturation::getAdresse_facturation()
         Adresse_facturations[i] = gcnew Adresse_facturation(ds->Tables[tableName]->Rows[i]);
     return Adresse_facturations;
 }
+
+array<Adresse_facturation^>^ Adresse_facturation::getAdresse_facturationActive()
+{
+    String^ tableName = Adresse_facturation::getTableName();
+    //Requête pour récupérer à partir de Sql Server 
+    //le DataSet contenant les personnes
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+    DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + " WHERE supprimer = 'false';", tableName);
+
+    int size = ds->Tables[tableName]->Rows->Count;
+    array<Adresse_facturation^>^ Adresse_facturations = gcnew array<Adresse_facturation^>(size);
+
+    //remplir le tableau personnes à partir des personnes récupérée dans DS.
+    for (int i = 0; i < size; i++)
+        Adresse_facturations[i] = gcnew Adresse_facturation(ds->Tables[tableName]->Rows[i]);
+    return Adresse_facturations;
+}
+
+array<Adresse_facturation^>^ Adresse_facturation::getAdresse_facturationActive(int id)
+{
+    String^ tableName = Adresse_facturation::getTableName();
+    //Requête pour récupérer à partir de Sql Server 
+    //le DataSet contenant les personnes
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+    DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + " WHERE supprimer = 'false' AND id_client = '" + id + "';", tableName);
+
+    int size = ds->Tables[tableName]->Rows->Count;
+    array<Adresse_facturation^>^ Adresse_facturations = gcnew array<Adresse_facturation^>(size);
+
+    //remplir le tableau personnes à partir des personnes récupérée dans DS.
+    for (int i = 0; i < size; i++)
+        Adresse_facturations[i] = gcnew Adresse_facturation(ds->Tables[tableName]->Rows[i]);
+    return Adresse_facturations;
+}
+
 String^ Adresse_facturation::getTableName()
 {
     return "adresse_facturation";

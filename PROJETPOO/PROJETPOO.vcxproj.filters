@@ -158,7 +158,7 @@
       <Filter>Quelldateien\class</Filter>
     </ClCompile>
     <ClCompile Include="modif_adresse_client.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Forms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

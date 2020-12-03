@@ -5,7 +5,7 @@
 Article::Article()
 {
     this->id = -1;
-    this->name = "";
+    this->nom = "";
     this->type_Article = "";
     this->TVA_rate = 0, 0;
     this->quantite_stock = 0;
@@ -15,7 +15,7 @@ Article::Article()
 Article::Article(DataRow^ DR)
 {
     this->id = Convert::ToInt32(DR->ItemArray[0]);
-    this->name = Convert::ToString(DR->ItemArray[1]);
+    this->nom = Convert::ToString(DR->ItemArray[1]);
     this->type_Article = Convert::ToString(DR->ItemArray[2]);
     this->TVA_rate = Convert::ToDouble(DR->ItemArray[3]);
     this->quantite_stock = Convert::ToInt32(DR->ItemArray[4]);
@@ -31,11 +31,11 @@ int Article::getID()
 }
 void Article::setName(String^ nom)
 {
-    this->name = nom;
+    this->nom = nom;
 }
 String^ Article::getName()
 {
-    return this->name;
+    return this->nom;
 }
 
 void Article::setTypeA(String^ Type_Article)
@@ -102,26 +102,30 @@ String^ Article::getTableName()
 {
     return "article";
 }
-void Article::persist()
+int Article::persist()
 {
     String^ tableName = Article::getTableName();
     SQL_CMD^ connexion = gcnew SQL_CMD();
     if (this->id == -1)
     {
         //Insert
-        this->id = connexion->insert("INSERT INTO " + tableName + " (name, type_article, TVA_rate, quantite_stock, seuil_reapro) " +
+        this->id = connexion->insert("INSERT INTO " + tableName + " (nom, type_article, TVA_rate, quantite_stock, seuil_reapro) " +
             "VALUES('" + this->getName() + "','" + this->getTypeA() + "','" + this->getTVA() + "','" + this->getQuantite() + "','" + this->getSeuil() + "');SELECT @@IDENTITY;");
-    }
+    
+      
+            }
     else
     {
         //Update
         connexion->update("UPDATE " + tableName +
-            "' SET name = '" + this->getName() + "' " +
-            "',type_article = '" + this->getTypeA() + " '" +
-            "' ,TVA_rate = '" + this->getTVA() + "'" +
-            "' ,quantite_stock = '" + this->getQuantite() + "'" +
-            "' ,seuil_reapro = '" + this->getSeuil() + ");");
+            " SET nom = '" + this->getName() + "' " +
+            ",type_article = '" + this->getTypeA() + " '" +
+            " ,TVA_rate = '" + this->getTVA() + "'" +
+            " ,quantite_stock = '" + this->getQuantite() + "'" +
+            " ,seuil_reapro = '" + this->getSeuil() + ");");
 
         "WHERE(id = " + this->getID() + ");";
     }
+
+    return this->id;
 }

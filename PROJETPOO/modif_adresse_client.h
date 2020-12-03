@@ -1,6 +1,7 @@
 #pragma once
 #include "adresse.h"
 #include "Adresse_facturation.h"
+#include "Adresse_livraison.h"
 
 namespace PROJETPOO {
 
@@ -17,6 +18,8 @@ namespace PROJETPOO {
 	/// </summary>
 	public ref class modif_adresse_client : public System::Windows::Forms::Form
 	{
+	private: int selectedId = 0;
+	private: bool insert = false;
 	public:
 		modif_adresse_client(void)
 		{
@@ -25,7 +28,14 @@ namespace PROJETPOO {
 			//TODO: ajoutez ici le code du constructeur
 			//
 		}
-
+	private: int idCurrent = 0;
+	public: void setIdCurrent(int id) {
+		this->idCurrent = id;
+	}
+	private: bool facture = true;
+	public: void setAf(bool af) {
+		this->facture = af;
+	}
 	protected:
 		/// <summary>
 		/// Nettoyage des ressources utilisées.
@@ -251,16 +261,13 @@ namespace PROJETPOO {
 		//on affiche les adresses de la personnes
 		//
 
-		//int id_cli = PROJETPOO::ClientForm::getIdCurrent();
-		int id_cli = 35;
+		int id_cli = idCurrent;
 
 		Adresse_facturation^ adr_fac = nullptr;
 		Adresse^ a = nullptr;
 
-		array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturation();
+		array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive();
 		array<Adresse^>^ adress = Adresse::getAdresse();
-
-
 
 		for (int i = 0; i < Adr_fac->Length; i++)
 		{
@@ -277,8 +284,11 @@ namespace PROJETPOO {
 			}
 		}
 	}
+
+
 private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
 
+	this->insert = true;
 	this->pays->Show();
 	this->pays_tb->Show();
 	this->cp->Show();
@@ -295,6 +305,75 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 	this->ligne1_tb->Text = "";
 
 }
+
+private: System::Void modifier_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	this->insert = false;
+	this->pays->Show();
+	this->pays_tb->Show();
+	this->cp->Show();
+	this->cp_tb->Show();
+	this->ville->Show();
+	this->ville_tb->Show();
+	this->ligne1->Show();
+	this->ligne1_tb->Show();
+	this->valider->Show();
+
+
+	Adresse^ adr = gcnew Adresse();
+
+	int id_cli = idCurrent;
+
+	if(facture){
+
+		array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive(id_cli);
+
+		Adresse_facturation^ adr_fac = gcnew Adresse_facturation();
+
+		array<Adresse^>^ adress = Adresse::getAdresse();
+
+		int id = Adr_fac[adresseData->CurrentRow->Index]->getIdAdresse();
+
+		for (int i = 0; i < Adr_fac->Length; i++)
+		{
+			for (int i = 0; i < adress->Length; i++)
+			{
+				if (adress[i]->getID() == id) {
+						adr = adress[i];
+
+				}
+			}
+		}
+	}
+	else {
+
+		array<Adresse_livraison^>^ Adr_liv = Adresse_livraison::getAdresse_livraisonActive(id_cli);
+
+		Adresse_livraison^ adr_liv = gcnew Adresse_livraison();
+
+		array<Adresse^>^ adress = Adresse::getAdresse();
+
+		int id = Adr_liv[adresseData->CurrentRow->Index]->getIdAdresse();
+
+		for (int i = 0; i < Adr_liv->Length; i++)
+		{
+			for (int i = 0; i < adress->Length; i++)
+			{
+				if (adress[i]->getID() == id) {
+					adr = adress[i];
+				}
+			}
+		}
+	}
+
+	selectedId = adr->getID();
+
+	this->ligne1_tb->Text = adr->getLigne1();
+	this->ville_tb->Text = adr->getVille();
+	this->cp_tb->Text = adr->getCp();
+	this->pays_tb->Text = adr->getPays();
+}
+
 private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	adresseData->Rows->Clear();
@@ -309,6 +388,7 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	this->ligne1_tb->Hide();
 	this->valider->Hide();
 
+
 	Adresse^ adr = gcnew Adresse();
 
 	adr->setLigne1(Convert::ToString(this->ligne1_tb->Text));
@@ -318,20 +398,117 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 
 	int id_adr = adr->persist();
 
-	//int id_cli = PROJETPOO::ClientForm::getIdCurrent();
-	int id_cli = 35;
-	Debug::Write(id_cli);
+	int id_cli = idCurrent;
+	
+	if (facture) {
+	
+		if (!insert) {
+
+			array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturation();
+
+			for (int i = 0; i < Adr_fac->Length; i++)
+			{
+				if (Adr_fac[i]->getIdClient() == id_cli && Adr_fac[i]->getIdAdresse() == selectedId) {
+					Adr_fac[i]->setsuppr(true);
+					Adr_fac[i]->persist();
+				}
+			}
+		}
+		
+		Adresse_facturation^ adr_fac = gcnew Adresse_facturation();
+
+		adr_fac->setIdAdresse(Convert::ToInt32(id_adr));
+		adr_fac->setIdClient(Convert::ToInt32(id_cli));
+
+		adr_fac->persist();
+
+		Adresse^ a = nullptr;
+
+		array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive();
+		array<Adresse^>^ adress = Adresse::getAdresse();
+
+		for (int i = 0; i < Adr_fac->Length; i++)
+		{
+			if (Adr_fac[i]->getIdClient() == id_cli) {
+				adr_fac = Adr_fac[i];
+				for (int i = 0; i < adress->Length; i++)
+				{
+					if (adress[i]->getID() == adr_fac->getIdAdresse()) {
+						a = adress[i];
+					}
+				}
+				if (adr_fac->getsuppr() == false)
+					adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
+			}
+		}
+	}
+	else {
+
+		if (!insert) {
+
+			array<Adresse_livraison^>^ Adr_liv = Adresse_livraison::getAdresse_livraison();
+
+			for (int i = 0; i < Adr_liv->Length; i++)
+			{
+				if (Adr_liv[i]->getIdClient() == id_cli && Adr_liv[i]->getIdAdresse() == selectedId) {
+					Adr_liv[i]->setsuppr(true);
+					Adr_liv[i]->persist();
+				}
+			}
+		}
+
+		Adresse_livraison^ adr_liv = gcnew Adresse_livraison();
+
+		adr_liv->setIdAdresse(Convert::ToInt32(id_adr));
+		adr_liv->setIdClient(Convert::ToInt32(id_cli));
+
+		adr_liv->persist();
+
+		Adresse^ a = nullptr;
+
+		array<Adresse_livraison^>^ Adr_liv = Adresse_livraison::getAdresse_livraisonActive();
+		array<Adresse^>^ adress = Adresse::getAdresse();
+
+		for (int i = 0; i < Adr_liv->Length; i++)
+		{
+			if (Adr_liv[i]->getIdClient() == id_cli) {
+				adr_liv = Adr_liv[i];
+				for (int i = 0; i < adress->Length; i++)
+				{
+					if (adress[i]->getID() == adr_liv->getIdAdresse()) {
+						a = adress[i];
+					}
+				}
+				if (adr_liv->getsuppr() == false)
+					adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
+			}
+		}
+	}
+}
+
+private: System::Void supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	int id_cli = idCurrent;
+
+	array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive(id_cli);
 
 	Adresse_facturation^ adr_fac = gcnew Adresse_facturation();
 
-	adr_fac->setIdAdresse(Convert::ToInt32(id_adr));
-	adr_fac->setIdClient(Convert::ToInt32(id_cli));
-	
+	int id =  Adr_fac[adresseData->CurrentRow->Index]->getID();
+
+	for (int i = 0; i < Adr_fac->Length; i++)
+	{
+		if (Adr_fac[i]->getID() == id) {
+			adr_fac = Adr_fac[i];
+		}
+	}
+
+	adr_fac->setsuppr(true);
 	adr_fac->persist();
 
-	Adresse^ a = nullptr;
+	adresseData->Rows->Clear();
 
-	array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturation();
+	Adresse^ a = nullptr;
 	array<Adresse^>^ adress = Adresse::getAdresse();
 
 	for (int i = 0; i < Adr_fac->Length; i++)
@@ -348,79 +525,6 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 				adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
 		}
 	}
-}
-private: System::Void modifier_Click(System::Object^ sender, System::EventArgs^ e) {
-
-	this->pays->Show();
-	this->pays_tb->Show();
-	this->cp->Show();
-	this->cp_tb->Show();
-	this->ville->Show();
-	this->ville_tb->Show();
-	this->ligne1->Show();
-	this->ligne1_tb->Show();
-	this->valider->Show();
-
-	array<Adresse^>^ adresse = Adresse::getAdresse();
-
-	int id = adresse[adresseData->CurrentRow->Index]->getID();
-
-	Adresse^ adr = nullptr;
-
-	for (int i = 0; i < adresse->Length; i++) {
-
-		if (adresse[i]->getID() == id) {
-			adr = adresse[i];
-		}
-	}
-
-	this->ligne1_tb->Text = adr->getLigne1();
-	this->ville_tb->Text = adr->getVille();
-	this->cp_tb->Text = adr->getCp();
-	this->pays_tb->Text = adr->getPays();
-	
-	//int id_cli = PROJETPOO::ClientForm::getIdCurrent();
-	int id_cli = 35;
-
-	array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturation();
-
-	Adresse_facturation^ adr_fac = nullptr;
-
-	for (int i = 0; i < Adr_fac->Length; i++)
-	{
-		if (Adr_fac[i]->getIdClient() == id_cli && Adr_fac[i]->getIdAdresse() == adr->getID()) {
-			adr_fac = Adr_fac[i];
-			adr_fac->setsuppr(true);
-			adr_fac->persist();
-		}
-	}
-
-
-
-	//shadow delete dans adresse facturation 
-
-
-	//puis add un nouveau
-
-	adr = gcnew Adresse();
-
-	adr->setLigne1(Convert::ToString(this->ligne1_tb->Text));
-	adr->setPays(Convert::ToString(this->pays_tb->Text));
-	adr->setVille(Convert::ToString(this->ville_tb->Text));
-	adr->setCp(Convert::ToString(this->cp_tb->Text));
-
-
-	int id_adr = adr->persist();
-
-	adr_fac = gcnew Adresse_facturation();
-
-	adr_fac->setIdAdresse(Convert::ToInt32(id_adr));
-	adr_fac->setIdClient(Convert::ToInt32(id_cli));
-
-	adr_fac->persist();
-
-}
-private: System::Void supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }

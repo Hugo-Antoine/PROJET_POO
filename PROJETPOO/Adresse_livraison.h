@@ -10,22 +10,23 @@ private:
     int id_client;
     bool suppr;
 
-
 public:
     Adresse_livraison();
     Adresse_livraison(DataRow^ DR);
     void setID(int);
     int getID();
-    void setID_adresse(int);
-    int getID_adresse(); 
-    void setID_client(int);
-    int getID_client();
+    void setIdAdresse(int);
+    int getIdAdresse(); 
+    void setIdClient(int);
+    int getIdClient();
  
     void setsuppr(bool);
     bool getsuppr();
 
 
     static array<Adresse_livraison^>^ getAdresse_livraison();
+    static array<Adresse_livraison^>^ getAdresse_livraisonActive();
+    static array<Adresse_livraison^>^ getAdresse_livraisonActive(int);
     void persist();
     static String^ getTableName();
 };

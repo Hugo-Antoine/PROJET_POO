@@ -1,5 +1,6 @@
 #pragma once
 #include "Article.h"
+#include "Palier_remise.h"
 
 namespace PROJETPOO {
 
@@ -37,11 +38,8 @@ namespace PROJETPOO {
 			}
 		}
 	private: System::Windows::Forms::DataGridView^ stockData;
-	protected:
-
-
 	private: System::Windows::Forms::Label^ Stock;
-	protected:
+	
 
 	private: System::Windows::Forms::Button^ Ajouter;
 	private: System::Windows::Forms::Button^ Modifier;
@@ -64,10 +62,6 @@ namespace PROJETPOO {
 
 
 
-
-
-
-
 	private: System::Windows::Forms::Button^ valider;
 
 
@@ -82,7 +76,7 @@ namespace PROJETPOO {
 		/// <summary>
 		/// Variable nécessaire au concepteur.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -139,7 +133,7 @@ namespace PROJETPOO {
 			this->Ajouter->TabIndex = 2;
 			this->Ajouter->Text = L"Ajouter";
 			this->Ajouter->UseVisualStyleBackColor = true;
-			this->Ajouter->Click += gcnew System::EventHandler(this, &StockForm::Ajouter_Click_1);
+			this->Ajouter->Click += gcnew System::EventHandler(this, &StockForm::Ajouter_Click);
 			// 
 			// Modifier
 			// 
@@ -308,6 +302,7 @@ namespace PROJETPOO {
 			this->Controls->Add(this->stockData);
 			this->Name = L"StockForm";
 			this->Text = L"StockForm";
+			this->Load += gcnew System::EventHandler(this, &StockForm::StockForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->stockData))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -315,7 +310,7 @@ namespace PROJETPOO {
 		}
 #pragma endregion
 
-private: System::Void StockForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void StockForm_Load(System::Object^ sender, System::EventArgs^ e) {
 
 		this->nom->Hide();
 		this->nom_tb->Hide();
@@ -332,7 +327,6 @@ private: System::Void StockForm_Load(System::Object^ sender, System::EventArgs^ 
 		this->qmr->Hide();
 		this->qmr_tb->Hide();
 		this->valider->Hide();
-
 
 		//
 		//On créait les colonnes de la table
@@ -352,29 +346,45 @@ private: System::Void StockForm_Load(System::Object^ sender, System::EventArgs^ 
 		//
 
 		array<Article^>^ ArticleActif = Article::getArticle();
-		Article^ a = nullptr;
+		array<Palier_Remise^>^ PalierActif = Palier_Remise::getPalier_Remise();
+
+
+		Article^ar = nullptr;
+		Palier_Remise^pr = nullptr;
+
 		stockData->Rows->Clear();
-		for (int i = 0; i < ArticleActif->Length; i++) {
 
-			a = ArticleActif[i];
-			stockData->Rows->Add(a->getName(), a->getTypeA(), a->getTVA(), a->getQuantite(), a->getSeuil());
+		for (int i = 0; i < ArticleActif->Length; i++)
+		{
+			ar = ArticleActif[i];
 
+			for (int i = 0; i < PalierActif->Length; i++)
+			{
+				if (PalierActif[i]->getId_Article() == ar->getID()) {
+					pr = PalierActif[i];
+				}
+			}
+			for (int i = 0; i < ArticleActif->Length; i++)
+			{
+
+				stockData->Rows->Add(ar->getName(), ar->getTypeA(), ar->getTVA(), ar->getQuantite(), ar->getSeuil(), pr->getQ_Mini(), pr->getP_U_HT());
+
+			}
 		}
+	}
 
-}
+	private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
 
-private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
+		//set tout à rien
 
-//set tout à rien
-
-	this->insert = true;
-	this->nom_tb->Text = "";
-	this->type_a_tb->Text = "";
-	this->tva_rate_tb->Text = "";
-	this->prix_ht_tb->Text = "";
-	this->sr_tb->Text = "";
-	this->q_stock_tb->Text = "";
-	this->qmr_tb->Text = "";
+		this->insert = true;
+		this->nom_tb->Text = "";
+		this->type_a_tb->Text = "";
+		this->tva_rate_tb->Text = "";
+		this->prix_ht_tb->Text = "";
+		this->sr_tb->Text = "";
+		this->q_stock_tb->Text = "";
+		this->qmr_tb->Text = "";
 
 		this->nom->Show();
 		this->nom_tb->Show();
@@ -394,65 +404,93 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 
 
 
-}
+	}
 
 
 
-private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ e) {
 
-	//
-	//On créait un tableau de clients que l'on pourra récupérer'
-	//
+		//
+		//On créait un tableau de clients que l'on pourra récupérer'
+		//
 
-	array<Article^>^ ArticleActif = Article::getArticle();
+		array<Article^>^ ArticleActif = Article::getArticle();
+		array<Palier_Remise^>^ PalierActif = Palier_Remise::getPalier_Remise();
+		//
+		//On récup l'id à la ligne selectionnée
+		//
 
-	//
-	//On récup l'id à la ligne selectionnée
-	//
+		int id = ArticleActif[stockData->CurrentRow->Index]->getID();
 
-	int id = ArticleActif[stockData->CurrentRow->Index]->getID();
+		//
+		//On initialise  l'objet a null
+		//
 
-	//
-	//On initialise  l'objet a null
-	//
+		Article^ ar = nullptr;
+		Palier_Remise^ pr = nullptr;
 
-	Article^ ar = nullptr;
+		//
+		//On set cl au client séléctionné
+		//
 
+		for (int i = 0; i < ArticleActif->Length; i++) {
 
-	//
-	//On set cl au client séléctionné
-	//
-
-	for (int i = 0; i<ArticleActif->Length; i++){
-
-		if (ArticleActif[i]->getID() == id){
-		ar = ArticleActif[i];
+			if (ArticleActif[i]->getID() == id) {
+				ar = ArticleActif[i];
+			}
 		}
-	}
 
-	//
-	//si client existe pas erreur
-	//
+		//
+		//si client existe pas erreur
+		//
 
-	if (ar == nullptr) {
-		Debug::WriteLine("client non trouvée id :" + id);
-		return;
-	}
+		if (ar == nullptr) {
+			Debug::WriteLine("client non trouvée id :" + id);
+			return;
+		}
 
-	//set tout avec les valeurs de la BDD
-	
-	this->insert = false;
-	this->nom_tb->Text = ar->getName();
-	this->type_a_tb->Text = ar->getTypeA();
-	this->tva_rate_tb->Text = Convert::ToString(ar-> getTVA());
-	this->sr_tb->Text = Convert::ToString(ar->getSeuil());
-	this->q_stock_tb->Text = Convert::ToString(ar->getQuantite());
-	this->prix_ht_tb->Text = "";
-	this->qmr_tb->Text = "";
+		//
+		//on set a à la bonne remise
+		//
+
+		for (int i = 0; i < PalierActif->Length; i++)
+		{
+			if (PalierActif[i]->getId_Article() == ar->getID())
+			{
+				pr = PalierActif[i];
+			}
+
+		}
 
 
-	//afficher tout
-	this->nom->Show();
+		//
+		//si adresse existe pas erreur
+		//
+
+		if (pr == nullptr) {
+			Debug::WriteLine("remise non trouvée id :" + pr->getId_Article());
+			return;
+		}
+
+
+
+
+
+		//set tout avec les valeurs de la BDD
+
+		this->insert = false;
+		this->nom_tb->Text = ar->getName();
+		this->type_a_tb->Text = ar->getTypeA();
+		this->tva_rate_tb->Text = Convert::ToString(ar->getTVA());
+		this->sr_tb->Text = Convert::ToString(ar->getSeuil());
+		this->q_stock_tb->Text = Convert::ToString(ar->getQuantite());
+		//appartient à palier remise
+		this->prix_ht_tb->Text = Convert::ToString(pr->getP_U_HT());
+		this->qmr_tb->Text = Convert::ToString(pr->getQ_Mini());
+
+
+		//afficher tout
+		this->nom->Show();
 		this->nom_tb->Show();
 		this->type_article->Show();
 		this->type_a_tb->Show();
@@ -469,23 +507,110 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 		this->valider->Show();
 
 
-		////
-		//// à compléter (création objet palier remise + le mettre à null, et le relier aux attributs)
-		////
+	}
+
+	private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		//
+		//On cache tout
+		//
+
+		this->nom->Hide();
+		this->nom_tb->Hide();
+		this->type_article->Hide();
+		this->type_a_tb->Hide();
+		this->tva_rate->Hide();
+		this->tva_rate_tb->Hide();
+		this->HT->Hide();
+		this->prix_ht_tb->Hide();
+		this->seuil_reapro->Hide();
+		this->sr_tb->Hide();
+		this->quantite_stock->Hide();
+		this->q_stock_tb->Hide();
+		this->qmr->Hide();
+		this->qmr_tb->Hide();
+		this->valider->Hide();
+
+
+		//
+		//on creer des objets Article et Palier_remise
+		//
+
+
+		Article^ ar = gcnew Article();
+		Palier_Remise^ pr = gcnew Palier_Remise();
+
+
+		//
+		//on set dans Palier_Remise les valeurs des txt box
+		//
+
+		ar->setName(Convert::ToString(this->nom_tb->Text));
+		ar->setTypeA(Convert::ToString(this->type_a_tb->Text));
+		ar->setTVA(Convert::ToDouble(this->tva_rate_tb->Text));
+		ar->setQuantite(Convert::ToInt32(this->q_stock_tb->Text));
+		ar->setSeuil(Convert::ToInt32(this->sr_tb->Text));
+		int id = ar->getID();
+		
+		//
+		//on set dans Article les valeurs des txt box
+		//
+
+		pr->setP_U_HT(Convert::ToDouble(this->prix_ht_tb->Text));
+		pr->setQ_Mini(Convert::ToInt32(this->qmr_tb->Text));
+		pr->setId_Article(ar->persist());
+		
+
+		//
+		//on envoie sur la BDD
+		//
+		
+		ar->persist();
+		pr->persist();
+		
+
+
+		//
+		//Actualisation des Vlaeurs dans le datagrid
+		//
+
+
+		array<Article^>^ ArticleActif = Article::getArticle();
+		array<Palier_Remise^>^ PalierActif = Palier_Remise::getPalier_Remise();
 
 
 
-}
+		ar = nullptr;
+		pr = nullptr;
 
+		stockData->Rows->Clear();
 
+		for (int i = 0; i < ArticleActif->Length; i++)
+		{
+			ar = ArticleActif[i];
 
+			for (int i = 0; i < PalierActif->Length; i++)
+			{
+				if (PalierActif[i]->getId_Article() == ar->getID()) {
+					pr = PalierActif[i];
+				}
+			}
+			for (int i = 0; i < ArticleActif->Length; i++)
+			{
+
+				stockData->Rows->Add(ar->getName(), ar->getTypeA(), ar->getTVA(), ar->getQuantite(), ar->getSeuil(), pr->getQ_Mini(), pr->getP_U_HT());
+
+			}
+		}
+	}
+	
 
 private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+
+
 }
 
-private: System::Void Ajouter_Click_1(System::Object^ sender, System::EventArgs^ e) {
-}
 };
 }

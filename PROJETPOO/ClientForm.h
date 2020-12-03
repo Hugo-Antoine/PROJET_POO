@@ -18,10 +18,7 @@ namespace PROJETPOO {
 	public ref class ClientForm : public System::Windows::Forms::Form
 	{
 	private: bool insert = false;
-	private: static int idCurrent = 0;
-	public: static int getIdCurrent() {
-		return idCurrent;
-	};
+	private: int idCurrent = 0;
 	public:
 		ClientForm(void)
 		{
@@ -326,9 +323,6 @@ namespace PROJETPOO {
 
 			c = ClientsActif[i];
 			clientData->Rows->Add(c->getNom(), c->getPrenom(), c->getddn(), c->getdpa());
-
-
-
 		}
 }
 private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -340,8 +334,6 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 	this->prenom_tb->Text = "";
 	this->ddn_pi->Text = "";
 	this->dpa_pi->Text = "";
-	this->af_modif->Text = "";
-	this->al_modif->Text = "";
 	
 	//afficher tout
 
@@ -408,8 +400,7 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	this->prenom_tb->Text = cl->getPrenom();
 	this->ddn_pi->Text = cl->getddn();
 	this->dpa_pi->Text = cl->getdpa();
-	this->af_modif->Text = "";
-	this->al_modif->Text = "";
+
 	
 	//afficher tout
 	this->nom->Show();
@@ -428,7 +419,6 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 }
 
 private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
-	
 	//
 	//cacher tout
 	//
@@ -448,11 +438,38 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	this->valider->Hide();
 
 	//
+	//création objet
+	//
+
+	Clients^ cli = gcnew Clients();
+
+	//
+	//envoie sur la bdd
+	//
+
+	array<Clients^>^ ClientsActif = Clients::getClientActif();
+
+	//si on est en update 
+	if (!insert)
+	{
+		int id = ClientsActif[clientData->CurrentRow->Index]->getID();
+		cli->setID(id);
+	}
+
+	cli->setNom(Convert::ToString(this->nom_tb->Text));
+	cli->setPrenom(Convert::ToString(this->prenom_tb->Text));
+	cli->setddn(Convert::ToString(this->ddn_pi->Value));
+	cli->setdpa(Convert::ToString(this->dpa_pi->Value));
+
+	cli->persist();
+
+
+	//
 	//Actualisation des valeurs dans datagrid
 	//
 
 	array<Clients^>^ client = Clients::getClientActif();
-	
+
 	Clients^ c = nullptr;
 	clientData->Rows->Clear();
 
@@ -461,13 +478,13 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 		clientData->Rows->Add(c->getNom(), c->getPrenom(), c->getddn(), c->getdpa());
 	}
 }
+
 private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	Clients^ c = gcnew Clients();
 	array<Clients^>^ ClientsActif = Clients::getClientActif();
 
 		int id = ClientsActif[clientData->CurrentRow->Index]->getID();
-
 
 	//
 	//On set c au client selectionné
@@ -496,6 +513,10 @@ private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^
 			clientData->Rows->Add(c->getNom(), c->getPrenom(), c->getddn(), c->getdpa());
 	}
 }
+
+
+
+
 private: System::Void af_modif_Click(System::Object^ sender, System::EventArgs^ e) {
 
 
@@ -515,13 +536,11 @@ private: System::Void af_modif_Click(System::Object^ sender, System::EventArgs^ 
 	cli->setddn(Convert::ToString(this->ddn_pi->Value));
 	cli->setdpa(Convert::ToString(this->dpa_pi->Value));
 
-	cli->persist();
-
-	/*idCurrent = cli->persist();
-
-	Debug::Write(idCurrent);*/
+	idCurrent = cli->persist();
 
 	PROJETPOO::modif_adresse_client^ clientForm = gcnew PROJETPOO::modif_adresse_client();
+	clientForm->setIdCurrent(idCurrent);
+	clientForm->setAf(true);
 	clientForm->ShowDialog();
 
 }
