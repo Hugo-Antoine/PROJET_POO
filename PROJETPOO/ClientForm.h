@@ -19,6 +19,7 @@ namespace PROJETPOO {
 	{
 	private: bool insert = false;
 	private: int idCurrent = 0;
+	private: bool alreadyPush = false;
 	public:
 		ClientForm(void)
 		{
@@ -256,6 +257,7 @@ namespace PROJETPOO {
 			this->al_modif->TabIndex = 26;
 			this->al_modif->Text = L"modifier";
 			this->al_modif->UseVisualStyleBackColor = true;
+			this->al_modif->Click += gcnew System::EventHandler(this, &ClientForm::al_modif_Click);
 			// 
 			// ClientForm
 			// 
@@ -460,8 +462,10 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	cli->setPrenom(Convert::ToString(this->prenom_tb->Text));
 	cli->setddn(Convert::ToString(this->ddn_pi->Value));
 	cli->setdpa(Convert::ToString(this->dpa_pi->Value));
-
-	cli->persist();
+	if (!alreadyPush){
+		cli->persist();
+	}
+	alreadyPush = true;
 
 
 	//
@@ -477,6 +481,7 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 		c = client[i];
 		clientData->Rows->Add(c->getNom(), c->getPrenom(), c->getddn(), c->getdpa());
 	}
+	alreadyPush = false;
 }
 
 private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -514,9 +519,6 @@ private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^
 	}
 }
 
-
-
-
 private: System::Void af_modif_Click(System::Object^ sender, System::EventArgs^ e) {
 
 
@@ -536,13 +538,44 @@ private: System::Void af_modif_Click(System::Object^ sender, System::EventArgs^ 
 	cli->setddn(Convert::ToString(this->ddn_pi->Value));
 	cli->setdpa(Convert::ToString(this->dpa_pi->Value));
 
-	idCurrent = cli->persist();
+	if (!alreadyPush) {
+		idCurrent = cli->persist();
+	}
+	alreadyPush = true;
+	
+	PROJETPOO::modif_adresse_client^ clientFormModif = gcnew PROJETPOO::modif_adresse_client();
+	clientFormModif->setIdCurrent(idCurrent);
+	clientFormModif->setAf(true);
+	clientFormModif->ShowDialog();
 
-	PROJETPOO::modif_adresse_client^ clientForm = gcnew PROJETPOO::modif_adresse_client();
-	clientForm->setIdCurrent(idCurrent);
-	clientForm->setAf(true);
-	clientForm->ShowDialog();
+}
+private: System::Void al_modif_Click(System::Object^ sender, System::EventArgs^ e) {
 
+	Clients^ cli = gcnew Clients();
+
+	array<Clients^>^ ClientsActif = Clients::getClientActif();
+
+	//si on est en update 
+	if (!insert)
+	{
+		int id = ClientsActif[clientData->CurrentRow->Index]->getID();
+		cli->setID(id);
+	}
+
+	cli->setNom(Convert::ToString(this->nom_tb->Text));
+	cli->setPrenom(Convert::ToString(this->prenom_tb->Text));
+	cli->setddn(Convert::ToString(this->ddn_pi->Value));
+	cli->setdpa(Convert::ToString(this->dpa_pi->Value));
+
+	if (!alreadyPush) {
+		idCurrent = cli->persist();
+	}
+	alreadyPush = true;
+
+	PROJETPOO::modif_adresse_client^ clientFormModif = gcnew PROJETPOO::modif_adresse_client();
+	clientFormModif->setIdCurrent(idCurrent);
+	clientFormModif->setAf(false);
+	clientFormModif->ShowDialog();
 }
 };
 }

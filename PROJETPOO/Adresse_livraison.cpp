@@ -126,7 +126,7 @@ void Adresse_livraison::persist()
     {
         //Update
         connexion->update("UPDATE " + tableName +
-            " SET adresse = '" + this->getIdAdresse() + "' ,id_client = '" + this->getIdClient() + "' ,supprimer = '" + this->getsuppr() +
-            " WHERE(id = " + this->getID() + ");");
+            " SET id_adresse = '" + this->getIdAdresse() + "' ,id_client = '" + this->getIdClient() + "' ,supprimer = '" + this->getsuppr() +
+            "' WHERE(id = " + this->getID() + ");");
     }
 }

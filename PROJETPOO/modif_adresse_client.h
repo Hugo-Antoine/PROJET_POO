@@ -261,29 +261,56 @@ namespace PROJETPOO {
 		//on affiche les adresses de la personnes
 		//
 
-		int id_cli = idCurrent;
 
-		Adresse_facturation^ adr_fac = nullptr;
+		int id_cli = idCurrent;
 		Adresse^ a = nullptr;
 
-		array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive();
-		array<Adresse^>^ adress = Adresse::getAdresse();
+		if (facture) {
 
-		for (int i = 0; i < Adr_fac->Length; i++)
-		{
-			if (Adr_fac[i]->getIdClient() == id_cli) {
-				adr_fac = Adr_fac[i];
-				for (int i = 0; i < adress->Length; i++)
-				{
-					if (adress[i]->getID() == adr_fac->getIdAdresse()) {
-						a = adress[i];
+			Adresse_facturation^ adr_fac = nullptr;
+
+			array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive();
+			array<Adresse^>^ adress = Adresse::getAdresse();
+
+			for (int i = 0; i < Adr_fac->Length; i++)
+			{
+				if (Adr_fac[i]->getIdClient() == id_cli) {
+					adr_fac = Adr_fac[i];
+					for (int i = 0; i < adress->Length; i++)
+					{
+						if (adress[i]->getID() == adr_fac->getIdAdresse()) {
+							a = adress[i];
+						}
 					}
+					if (adr_fac->getsuppr() == false)
+						adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
 				}
-				if (adr_fac->getsuppr() == false)
-					adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
+			}
+		}
+		else
+		{
+			Adresse_livraison^ adr_liv = nullptr;
+
+			array<Adresse_livraison^>^ Adr_liv = Adresse_livraison::getAdresse_livraisonActive();
+			array<Adresse^>^ adress = Adresse::getAdresse();
+
+			for (int i = 0; i < Adr_liv->Length; i++)
+			{
+				if (Adr_liv[i]->getIdClient() == id_cli) {
+					adr_liv = Adr_liv[i];
+					for (int i = 0; i < adress->Length; i++)
+					{
+						if (adress[i]->getID() == adr_liv->getIdAdresse()) {
+							a = adress[i];
+						}
+					}
+					if (adr_liv->getsuppr() == false)
+						adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
+				}
 			}
 		}
 	}
+
 
 
 private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -488,41 +515,85 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 
 private: System::Void supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
 
-	int id_cli = idCurrent;
+	if (facture) {
 
-	array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive(id_cli);
+		int id_cli = idCurrent;
 
-	Adresse_facturation^ adr_fac = gcnew Adresse_facturation();
+		array<Adresse_facturation^>^ Adr_fac = Adresse_facturation::getAdresse_facturationActive(id_cli);
 
-	int id =  Adr_fac[adresseData->CurrentRow->Index]->getID();
+		Adresse_facturation^ adr_fac = gcnew Adresse_facturation();
 
-	for (int i = 0; i < Adr_fac->Length; i++)
-	{
-		if (Adr_fac[i]->getID() == id) {
-			adr_fac = Adr_fac[i];
+		int id = Adr_fac[adresseData->CurrentRow->Index]->getID();
+
+		for (int i = 0; i < Adr_fac->Length; i++)
+		{
+			if (Adr_fac[i]->getID() == id) {
+				adr_fac = Adr_fac[i];
+			}
+		}
+
+		adr_fac->setsuppr(true);
+		adr_fac->persist();
+
+		adresseData->Rows->Clear();
+
+		Adresse^ a = nullptr;
+		array<Adresse^>^ adress = Adresse::getAdresse();
+
+		for (int i = 0; i < Adr_fac->Length; i++)
+		{
+			if (Adr_fac[i]->getIdClient() == id_cli) {
+				adr_fac = Adr_fac[i];
+				for (int i = 0; i < adress->Length; i++)
+				{
+					if (adress[i]->getID() == adr_fac->getIdAdresse()) {
+						a = adress[i];
+					}
+				}
+				if (adr_fac->getsuppr() == false)
+					adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
+			}
 		}
 	}
-
-	adr_fac->setsuppr(true);
-	adr_fac->persist();
-
-	adresseData->Rows->Clear();
-
-	Adresse^ a = nullptr;
-	array<Adresse^>^ adress = Adresse::getAdresse();
-
-	for (int i = 0; i < Adr_fac->Length; i++)
+	else
 	{
-		if (Adr_fac[i]->getIdClient() == id_cli) {
-			adr_fac = Adr_fac[i];
-			for (int i = 0; i < adress->Length; i++)
-			{
-				if (adress[i]->getID() == adr_fac->getIdAdresse()) {
-					a = adress[i];
-				}
+
+		int id_cli = idCurrent;
+
+		array<Adresse_livraison^>^ Adr_liv = Adresse_livraison::getAdresse_livraisonActive(id_cli);
+
+		Adresse_livraison^ adr_liv = gcnew Adresse_livraison();
+
+		int id = Adr_liv[adresseData->CurrentRow->Index]->getID();
+
+		for (int i = 0; i < Adr_liv->Length; i++)
+		{
+			if (Adr_liv[i]->getID() == id) {
+				adr_liv = Adr_liv[i];
 			}
-			if (adr_fac->getsuppr() == false)
-				adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
+		}
+
+		adr_liv->setsuppr(true);
+		adr_liv->persist();
+
+		adresseData->Rows->Clear();
+
+		Adresse^ a = nullptr;
+		array<Adresse^>^ adress = Adresse::getAdresse();
+
+		for (int i = 0; i < Adr_liv->Length; i++)
+		{
+			if (Adr_liv[i]->getIdClient() == id_cli) {
+				adr_liv = Adr_liv[i];
+				for (int i = 0; i < adress->Length; i++)
+				{
+					if (adress[i]->getID() == adr_liv->getIdAdresse()) {
+						a = adress[i];
+					}
+				}
+				if (adr_liv->getsuppr() == false)
+					adresseData->Rows->Add(a->getLigne1(), a->getVille(), a->getCp(), a->getPays());
+			}
 		}
 	}
 }
