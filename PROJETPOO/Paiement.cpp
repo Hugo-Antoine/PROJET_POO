@@ -96,7 +96,7 @@ int Paiement::persist()
         //Update
         connexion->update("UPDATE " + tableName +
             " SET date = '" + this->getDate() + "' ,moyen = '" + this->getMoyen() + "' ,montant = '" + this->getMontant() + "' ,id_commande = " + this->getId_Commande() +
-            "WHERE(id = " + this->getID() + ");");
+            " WHERE(id = " + this->getID() + ");");
     }
 }
 

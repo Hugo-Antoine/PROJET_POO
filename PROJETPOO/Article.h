@@ -11,6 +11,7 @@ private:
     double TVA_rate;
     int quantite_stock;
     int seuil_reapro;
+    bool supr;
 
 public:
     Article();
@@ -33,8 +34,17 @@ public:
     void setSeuil(int);
     int getSeuil();
 
-
+    void setsupr(bool);
+    bool getsupr();
     static array<Article^>^ getArticle();
+    static array<Article^>^ getArticleActif();
+    
+    int requete1();
+    int requete2();
+    
     int persist();
     static String^ getTableName();
+    
+
+
 };

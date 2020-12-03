@@ -98,6 +98,12 @@
     <ClInclude Include="modif_adresse_client.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="article_commande_form.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="statForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientForm.cpp">
@@ -113,9 +119,6 @@
       <Filter>Quelldateien\Forms</Filter>
     </ClCompile>
     <ClCompile Include="StockForm.cpp">
-      <Filter>Quelldateien\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="CppCLR_WinformsProjekt.cpp">
       <Filter>Quelldateien\Forms</Filter>
     </ClCompile>
     <ClCompile Include="Personnel.cpp">
@@ -159,6 +162,15 @@
     </ClCompile>
     <ClCompile Include="modif_adresse_client.cpp">
       <Filter>Quelldateien\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="CppCLR_WinformsProjekt.cpp">
+      <Filter>Quelldateien\others</Filter>
+    </ClCompile>
+    <ClCompile Include="article_commande_form.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="statForm.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

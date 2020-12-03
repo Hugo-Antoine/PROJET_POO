@@ -352,6 +352,10 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 	this->al->Show();
 	this->al_modif->Show();
 	this->valider->Show();
+
+	this->Ajouter->Hide();
+	this->Supprimer->Hide();
+	this->Modifier->Hide();
 }
 
 private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -418,6 +422,10 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	this->al->Show();
 	this->al_modif->Show();
 	this->valider->Show();
+
+	this->Ajouter->Hide();
+	this->Supprimer->Hide();
+	this->Modifier->Hide();
 }
 
 private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -438,6 +446,9 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	this->al->Hide();
 	this->al_modif->Hide();
 	this->valider->Hide();
+	this->Ajouter->Show();
+	this->Supprimer->Show();
+	this->Modifier->Show();
 
 	//
 	//création objet
@@ -549,6 +560,8 @@ private: System::Void af_modif_Click(System::Object^ sender, System::EventArgs^ 
 	clientFormModif->ShowDialog();
 
 }
+
+
 private: System::Void al_modif_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	Clients^ cli = gcnew Clients();

@@ -12,9 +12,10 @@ Commande::Commande()
     this->dds = "";
     this->totalht = 0;
     this->totalttc = 0;
-    this->id_adresse = 0;
+    this->id_adresse_cmd_adresse_livraison = 0;
     this->id_client = 0;
     this->id_adresse_cmd_adresse_facturation = 0;
+    this->suppr = false;
 }
 
 Commande::Commande(DataRow^ DR)
@@ -26,7 +27,7 @@ Commande::Commande(DataRow^ DR)
     this->dds = Convert::ToString(DR->ItemArray[4]);
     this->totalht = Convert::ToDouble(DR->ItemArray[5]);
     this->totalttc = Convert::ToDouble(DR->ItemArray[6]);
-    this->id_adresse = Convert::ToInt32(DR->ItemArray[7]);
+    this->id_adresse_cmd_adresse_livraison = Convert::ToInt32(DR->ItemArray[7]);
     this->id_client = Convert::ToInt32(DR->ItemArray[8]);
     this->id_adresse_cmd_adresse_facturation = Convert::ToInt32(DR->ItemArray[9]);
 
@@ -80,31 +81,31 @@ String^ Commande::getdds()
     return this->dds;
 }
 
-void Commande::settotalht(float totalht)
+void Commande::settotalht(double totalht)
 {
     this->totalht = totalht;
 }
-int Commande::gettotalht()
+double Commande::gettotalht()
 {
     return this->totalht;
 }
 
-void Commande::settotalttc(float totalttc)
+void Commande::settotalttc(double totalttc)
 {
     this->totalttc = totalttc;
 }
-int Commande::gettotalttc()
+double Commande::gettotalttc()
 {
     return this->totalttc;
 }
 
-void Commande::setidadresse(int idadresse)
+void Commande::setid_adresse_cmd_adresse_livraison(int id_adresse_cmd_adresse_livraison)
 {
-    this->id_adresse = idadresse;
+    this->id_adresse_cmd_adresse_livraison = id_adresse_cmd_adresse_livraison;
 }
-int Commande::getidadresse()
+int Commande::getid_adresse_cmd_adresse_livraison()
 {
-    return this->id_adresse;
+    return this->id_adresse_cmd_adresse_livraison;
 }
 
 void Commande::setidclient(int idclient)
@@ -116,14 +117,24 @@ int Commande::getidclient()
     return this->id_client;
 }
 
-void Commande::setidadressecmdfacturation(int idadressecmfacturation)
+void Commande::setid_adresse_cmd_adresse_facturation(int idadressecmfacturation)
 {
     this->id_adresse_cmd_adresse_facturation = idadressecmfacturation;
 }
 
-int Commande::getidadressecmdfacturation()
+int Commande::getid_adresse_cmd_adresse_facturation()
 {
     return this->id_adresse_cmd_adresse_facturation;
+}
+
+void Commande::setsuppr(bool suppr)
+{
+    this->suppr = suppr;
+}
+
+bool Commande::getsuppr()
+{
+    return this->suppr;
 }
 
 array<Commande^>^ Commande::getCommande()
@@ -142,35 +153,54 @@ array<Commande^>^ Commande::getCommande()
         Commandes[i] = gcnew Commande(ds->Tables[tableName]->Rows[i]);
     return Commandes;
 }
+
+array<Commande^>^ Commande::getCommandeActive()
+{
+    String^ tableName = Commande::getTableName();
+    //Requête pour récupérer à partir de Sql Server 
+    //le DataSet contenant les personnes
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+    DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + " WHERE supprimer = 'false';", tableName);
+
+    int size = ds->Tables[tableName]->Rows->Count;
+    array<Commande^>^ Commandes = gcnew array<Commande^>(size);
+
+    //remplir le tableau personnes à partir des personnes récupérée dans DS.
+    for (int i = 0; i < size; i++)
+        Commandes[i] = gcnew Commande(ds->Tables[tableName]->Rows[i]);
+    return Commandes;
+}
+
 String^ Commande::getTableName()
 {
     return "commande";
 }
-void Commande::persist()
+int Commande::persist()
 {
     String^ tableName = Commande::getTableName();
     SQL_CMD^ connexion = gcnew SQL_CMD();
     if (this->id == -1)
     {
         //Insert
-        this->id = connexion->insert("INSERT INTO " + tableName + " (reference, date_livraison, date_emission, date_de_solde, total_ht, total_ttc, id_adresse, id_client, id_adresse, id_adresse_cmd_fadresse_facturation) " +
-            "VALUES('" + this->getref() + "','" + this->getddl() + "','" + this->getde() + "','" + this->getdds() + "','" + this->gettotalht() + "','" + this->gettotalttc() + "','" + this->getidadresse() + "','" + this->getidclient() + "','" + this->getidadressecmdfacturation() + "');SELECT @@IDENTITY;"); /*questio*/
+        this->id = connexion->insert("INSERT INTO " + tableName +
+            " VALUES('" + this->getref() + "','" + this->getddl() + "','" + this->getde() + "','" + this->getdds() + "','" + this->gettotalht() + "','" + this->gettotalttc() + "','" + this->getid_adresse_cmd_adresse_livraison() + "','" + this->getidclient() + "','" + this->getid_adresse_cmd_adresse_facturation() +"','" + this->getsuppr() + "');SELECT @@IDENTITY;"); /*questio*/
     }
     else
     {
         //Update
         connexion->update("UPDATE " + tableName +
-            "' SET reference = '" + this->getref() + "' " +
-            "',date_livraison = '" + this->getddl() + " '" +
-            "' ,date_emission = '" + this->getde() + "'" +
-            "' ,date_de_solde = '" + this->getdds() + "'" +
-            "' ,total_ht = '" + this->gettotalht() + "'" +
-            "',total_ttc = '" + this->gettotalttc() + "'" +
-            "',id_adresse = '" + this->getidadresse() + "'" +
-            "',id_client = '" + this->getidclient() + "'" +
-            "',id_adresse_cmd_adresse_facturation = '" + this->getidadressecmdfacturation() + ");");
-
-        "WHERE(id = " + this->getID() + ");";
+            " SET reference = '" + this->getref() + "' " +
+            ",date_livraison = '" + this->getddl() + "' " +
+            ",date_emission = '" + this->getde() + "' " +
+            ",date_de_solde = '" + this->getdds() + "' " +
+            ",total_ht = '" + this->gettotalht() + "' " +
+            ",total_ttc = '" + this->gettotalttc() + "' " +
+            ",id_adresse_cmd_fadresse_livraison = '" + this->getid_adresse_cmd_adresse_livraison() + "' " +
+            ",id_client = '" + this->getidclient() + "' " +
+            ",id_adresse_cmd_adresse_facturation = '" + this->getid_adresse_cmd_adresse_facturation() + "' " +
+            ",supprimer = '" + this->getsuppr() +
+        "' WHERE(id = " + this->getID() + ");");
     }
+    return this->id;
 }
 

@@ -39,7 +39,7 @@ namespace PROJETPOO {
 		}
 	private: System::Windows::Forms::DataGridView^ stockData;
 	private: System::Windows::Forms::Label^ Stock;
-	
+
 
 	private: System::Windows::Forms::Button^ Ajouter;
 	private: System::Windows::Forms::Button^ Modifier;
@@ -336,11 +336,11 @@ namespace PROJETPOO {
 		this->stockData->Columns[0]->Name = "Nom";
 		this->stockData->Columns[1]->Name = "Type_article";
 		this->stockData->Columns[2]->Name = "Tva_rate";
-		this->stockData->Columns[3]->Name = "Prix_HT";
+		this->stockData->Columns[3]->Name = "Quantite_stock";
 		this->stockData->Columns[4]->Name = "Seuil_réappro";
-		this->stockData->Columns[5]->Name = "Quantite_stock";
-		this->stockData->Columns[6]->Name = "Quantite_remise";
-		
+		this->stockData->Columns[5]->Name = "Quantite_remise";
+		this->stockData->Columns[6]->Name = "Prix_HT";
+
 		//
 		//On remplit les colonnes avec les données de la bdd
 		//
@@ -349,8 +349,8 @@ namespace PROJETPOO {
 		array<Palier_Remise^>^ PalierActif = Palier_Remise::getPalier_Remise();
 
 
-		Article^ar = nullptr;
-		Palier_Remise^pr = nullptr;
+		Article^ ar = gcnew Article();
+		Palier_Remise^ pr = gcnew Palier_Remise();
 
 		stockData->Rows->Clear();
 
@@ -358,22 +358,24 @@ namespace PROJETPOO {
 		{
 			ar = ArticleActif[i];
 
-			for (int i = 0; i < PalierActif->Length; i++)
-			{
-				if (PalierActif[i]->getId_Article() == ar->getID()) {
-					pr = PalierActif[i];
-				}
-			}
-			for (int i = 0; i < ArticleActif->Length; i++)
-			{
+			stockData->Rows->Add(ar->getName(), ar->getTypeA(), ar->getTVA(), ar->getQuantite(), ar->getSeuil());
 
-				stockData->Rows->Add(ar->getName(), ar->getTypeA(), ar->getTVA(), ar->getQuantite(), ar->getSeuil(), pr->getQ_Mini(), pr->getP_U_HT());
-
-			}
 		}
+
+		for (int i = 0; i < PalierActif->Length; i++) {
+
+			pr = PalierActif[i];
+
+			stockData->Rows->Add(pr->getQ_Mini(), pr->getP_U_HT());
+		}
+
+
 	}
 
 	private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+
 
 		//set tout à rien
 
@@ -410,6 +412,8 @@ namespace PROJETPOO {
 
 	private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ e) {
 
+
+
 		//
 		//On créait un tableau de clients que l'on pourra récupérer'
 		//
@@ -429,8 +433,9 @@ namespace PROJETPOO {
 		Article^ ar = nullptr;
 		Palier_Remise^ pr = nullptr;
 
+
 		//
-		//On set cl au client séléctionné
+		//On set ar à l'article séléctionné
 		//
 
 		for (int i = 0; i < ArticleActif->Length; i++) {
@@ -441,13 +446,16 @@ namespace PROJETPOO {
 		}
 
 		//
-		//si client existe pas erreur
+		//si article existe pas erreur
 		//
 
 		if (ar == nullptr) {
 			Debug::WriteLine("client non trouvée id :" + id);
 			return;
 		}
+
+
+
 
 		//
 		//on set a à la bonne remise
@@ -539,36 +547,32 @@ namespace PROJETPOO {
 
 		Article^ ar = gcnew Article();
 		Palier_Remise^ pr = gcnew Palier_Remise();
-
+		Article^ a = gcnew Article();
 
 		//
 		//on set dans Palier_Remise les valeurs des txt box
 		//
 
+		a->getID();
 		ar->setName(Convert::ToString(this->nom_tb->Text));
 		ar->setTypeA(Convert::ToString(this->type_a_tb->Text));
 		ar->setTVA(Convert::ToDouble(this->tva_rate_tb->Text));
 		ar->setQuantite(Convert::ToInt32(this->q_stock_tb->Text));
 		ar->setSeuil(Convert::ToInt32(this->sr_tb->Text));
-		int id = ar->getID();
-		
+
 		//
 		//on set dans Article les valeurs des txt box
 		//
-
-		pr->setP_U_HT(Convert::ToDouble(this->prix_ht_tb->Text));
 		pr->setQ_Mini(Convert::ToInt32(this->qmr_tb->Text));
+		pr->setP_U_HT(Convert::ToDouble(this->prix_ht_tb->Text));
 		pr->setId_Article(ar->persist());
-		
+
 
 		//
 		//on envoie sur la BDD
 		//
-		
 		ar->persist();
 		pr->persist();
-		
-
 
 		//
 		//Actualisation des Vlaeurs dans le datagrid
@@ -579,9 +583,8 @@ namespace PROJETPOO {
 		array<Palier_Remise^>^ PalierActif = Palier_Remise::getPalier_Remise();
 
 
-
-		ar = nullptr;
-		pr = nullptr;
+		 ar = gcnew Article();
+		 pr = gcnew Palier_Remise();
 
 		stockData->Rows->Clear();
 
@@ -589,28 +592,61 @@ namespace PROJETPOO {
 		{
 			ar = ArticleActif[i];
 
-			for (int i = 0; i < PalierActif->Length; i++)
-			{
-				if (PalierActif[i]->getId_Article() == ar->getID()) {
-					pr = PalierActif[i];
-				}
-			}
-			for (int i = 0; i < ArticleActif->Length; i++)
-			{
+			stockData->Rows->Add(ar->getName(), ar->getTypeA(), ar->getTVA(), ar->getQuantite(), ar->getSeuil());
 
-				stockData->Rows->Add(ar->getName(), ar->getTypeA(), ar->getTVA(), ar->getQuantite(), ar->getSeuil(), pr->getQ_Mini(), pr->getP_U_HT());
+		}
 
+		for (int i = 0; i < PalierActif->Length; i++) {
+
+			pr = PalierActif[i];
+
+			stockData->Rows->Add(pr->getQ_Mini(), pr->getP_U_HT());
+		}
+
+
+	}
+
+	private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+
+
+		Article^ ar = gcnew Article();
+		Palier_Remise^ pr = gcnew Palier_Remise();
+		array<Article^>^ ArticleActif = Article::getArticle();
+
+		int id = ArticleActif[stockData->CurrentRow->Index]->getID();
+
+		//
+		//On set ar a l'article selectionné
+		//
+
+		for (int i = 0; i < ArticleActif->Length; i++)
+		{
+			if (ArticleActif[i]->getID() == id) {
+				ar = ArticleActif[i];
 			}
 		}
+
+		ar->setsupr(true);
+		ar->persist();
+
+		//
+		//Actualisation des valeurs dans datagrid
+		//
+
+		array<Article^>^ article = Article::getArticle();
+
+		stockData->Rows->Clear();
+
+		for (int i = 0; i < article->Length; i++) {
+
+			ar = article[i];
+		}
+
+		if (ar->getsupr() == false) {
+			stockData->Rows->Add(ar->getName(), ar->getTypeA(), ar->getTVA(), ar->getQuantite(), ar->getSeuil(), pr->getQ_Mini(), pr->getP_U_HT(), pr->getId_Article());
+		}
 	}
-	
-
-private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^ e) {
-
-
-
-
-}
-
-};
-}
+	};
+	}

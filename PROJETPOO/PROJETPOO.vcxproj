@@ -147,6 +147,9 @@
     <ClInclude Include="Adresse_facturation.h" />
     <ClInclude Include="Adresse_livraison.h" />
     <ClInclude Include="Article.h" />
+    <ClInclude Include="article_commande_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientForm.h">
       <FileType>CppForm</FileType>
@@ -171,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SQL_CMD.h" />
+    <ClInclude Include="statForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="StockForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -180,6 +186,7 @@
     <ClCompile Include="Adresse_facturation.cpp" />
     <ClCompile Include="Adresse_livraison.cpp" />
     <ClCompile Include="Article.cpp" />
+    <ClCompile Include="article_commande_form.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientForm.cpp" />
@@ -200,6 +207,7 @@
     <ClCompile Include="Personnel.cpp" />
     <ClCompile Include="PersonnelForm.cpp" />
     <ClCompile Include="SQL_CMD.cpp" />
+    <ClCompile Include="statForm.cpp" />
     <ClCompile Include="StockForm.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +221,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="article_commande_form.resx">
+      <DependentUpon>article_commande_form.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ClientForm.resx">
       <DependentUpon>ClientForm.h</DependentUpon>
     </EmbeddedResource>
@@ -227,6 +238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PersonnelForm.resx">
       <DependentUpon>PersonnelForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="statForm.resx">
+      <DependentUpon>statForm.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StockForm.resx">
       <DependentUpon>StockForm.h</DependentUpon>

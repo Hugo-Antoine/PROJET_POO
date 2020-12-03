@@ -574,13 +574,12 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	//On recupere le l'index du superieur de la personne
 	//
 
-	for (int i = 0; i < personnels->Length-1; i++)
+	for (int i = 0; i < personnels->Length; i++)
 	{
 		if (pSup->getNom() + " " + pSup->getPrenom() == this->SuperiorListe->GetItemText(this->SuperiorListe->Items[i])) {
 			index = i;
 		}
 	}
-	Debug::Write(index);
 
 	//
 	//On Set toute les valeurs a leur correspondance dans la BDD et on dit qu'on est en mode update

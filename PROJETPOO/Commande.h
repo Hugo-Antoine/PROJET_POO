@@ -10,11 +10,12 @@ private:
     String^ ddl;
     String^ de;
     String^ dds;
-    float totalht;
-    float totalttc;
-    int id_adresse;
+    double totalht;
+    double totalttc;
+    int id_adresse_cmd_adresse_livraison;
     int id_client;
     int id_adresse_cmd_adresse_facturation;
+    bool suppr;
 
 public:
     Commande();
@@ -35,25 +36,28 @@ public:
     void setdds(String^);
     String^ getdds();
 
-    void settotalht(float);
-    int gettotalht();
+    void settotalht(double);
+    double gettotalht();
 
-    void settotalttc(float);
-    int gettotalttc();
+    void settotalttc(double);
+    double gettotalttc();
 
-    void setidadresse(int);
-    int getidadresse();
+    void setid_adresse_cmd_adresse_livraison(int);
+    int getid_adresse_cmd_adresse_livraison();
 
     void setidclient(int);
     int getidclient();
 
-    void setidadressecmdfacturation(int);
-    int getidadressecmdfacturation();
+    void setid_adresse_cmd_adresse_facturation(int);
+    int getid_adresse_cmd_adresse_facturation();
 
+    void setsuppr(bool);
+    bool getsuppr();
 
 
     static array<Commande^>^ getCommande();
-    void persist();
+    static array<Commande^>^ getCommandeActive();
+    int persist();
     static String^ getTableName();
 };
 

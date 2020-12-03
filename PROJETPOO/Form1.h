@@ -3,7 +3,7 @@
 #include "CommandeForm.h"
 #include "PersonnelForm.h"
 #include "StockForm.h"
-#include "Personnel.h"
+#include "statForm.h"
 
 namespace CppCLRWinformsProjekt {
 
@@ -44,12 +44,7 @@ namespace CppCLRWinformsProjekt {
 	private: System::Windows::Forms::Button^ Stock;
 	private: System::Windows::Forms::Button^ personnel;
 	private: System::Windows::Forms::Label^ GERER;
-	protected:
-
-
-
-
-	protected:
+	private: System::Windows::Forms::Button^ stat;
 
 	private:
 
@@ -70,6 +65,7 @@ namespace CppCLRWinformsProjekt {
 			this->Stock = (gcnew System::Windows::Forms::Button());
 			this->personnel = (gcnew System::Windows::Forms::Button());
 			this->GERER = (gcnew System::Windows::Forms::Label());
+			this->stat = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// Client
@@ -121,11 +117,22 @@ namespace CppCLRWinformsProjekt {
 			this->GERER->TabIndex = 4;
 			this->GERER->Text = L"GERER";
 			// 
+			// stat
+			// 
+			this->stat->Location = System::Drawing::Point(105, 235);
+			this->stat->Name = L"stat";
+			this->stat->Size = System::Drawing::Size(75, 23);
+			this->stat->TabIndex = 5;
+			this->stat->Text = L"stat";
+			this->stat->UseVisualStyleBackColor = true;
+			this->stat->Click += gcnew System::EventHandler(this, &Form1::stat_Click);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 261);
+			this->ClientSize = System::Drawing::Size(284, 282);
+			this->Controls->Add(this->stat);
 			this->Controls->Add(this->GERER);
 			this->Controls->Add(this->personnel);
 			this->Controls->Add(this->Stock);
@@ -157,5 +164,9 @@ namespace CppCLRWinformsProjekt {
 		PROJETPOO::PersonnelForm^ personnelForm = gcnew PROJETPOO::PersonnelForm();
 		personnelForm->ShowDialog();
 	}
+private: System::Void stat_Click(System::Object^ sender, System::EventArgs^ e) {
+	PROJETPOO::statForm^ StatForm = gcnew PROJETPOO::statForm();
+	StatForm->ShowDialog();
+}
 };
 }
