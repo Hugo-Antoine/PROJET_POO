@@ -76,10 +76,12 @@ array<Adresse^>^ Adresse::getAdresse()
         personnes[i] = gcnew Adresse(ds->Tables[tableName]->Rows[i]);
     return personnes;
 }
+
 String^ Adresse::getTableName()
 {
     return "Adresse";
 }
+
 int Adresse::persist()
 {
     String^ tableName = Adresse::getTableName();

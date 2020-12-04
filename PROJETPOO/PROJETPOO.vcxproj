@@ -174,6 +174,7 @@
     </ClInclude>
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SQL_CMD.h" />
+    <ClInclude Include="Stat.h" />
     <ClInclude Include="statForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -207,6 +208,7 @@
     <ClCompile Include="Personnel.cpp" />
     <ClCompile Include="PersonnelForm.cpp" />
     <ClCompile Include="SQL_CMD.cpp" />
+    <ClCompile Include="Stat.cpp" />
     <ClCompile Include="statForm.cpp" />
     <ClCompile Include="StockForm.cpp" />
   </ItemGroup>

@@ -2,8 +2,8 @@
 #include "Article.h"
 #include "SQL_CMD.h"
 #include "Commande_article.h"
-
-
+#include "Commande.h"
+#include "Client.h"
 
 
 Article::Article()
@@ -131,12 +131,32 @@ array<Article^>^ Article::getArticleActif()
     return Articles;
 }
 
-
-
 String^ Article::getTableName()
 {
     return "article";
 }
+
+String^ Article::getTableName2()
+{
+    return "commande_article";
+}
+
+String^ Article::getTableName3()
+{
+    return "palier_remise";
+}
+
+String^ Article::getTableName4()
+{
+    return "commande";
+}
+
+String^ Article::getTableName5()
+{
+    return "client";
+}
+
+
 int Article::persist()
 {
     String^ tableName = Article::getTableName();
@@ -162,10 +182,6 @@ int Article::persist()
             " ,supprimer = '" + this->getsupr() + "' " +
             "WHERE(id = " + this->getID() + "); ");
     }
-
-
-
-
     return this->id;
 }
  
@@ -174,9 +190,90 @@ int Article::requete1() {
     String^ tableName = Article::getTableName();
     SQL_CMD^ connexion = gcnew SQL_CMD();
 
-    connexion->update("SELECT * FROM " + tableName + "WHERE( " + this->getSeuil() + " > " +  this->getQuantite()  + " );" );
+    connexion->update("SELECT * FROM article WHERE( seuil_reapro > quantite_stock );");
+
+    return this->id;
+}
+
+int Article::requete2() {
+
+    String^ tableName = Article::getTableName();
+    String^ tableName2 = Article::getTableName2();
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+
+    connexion->update("SELECT TOP 10 article.id, article.nom, article.type_article FROM article INNER JOIN commande_article ON article.id = commande_article.id order by quantite desc);" );
+
+    return this->id;
+}
+
+int Article::requete3() {
+
+    String^ tableName = Article::getTableName();
+    String^ tableName2 = Article::getTableName2();
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+
+    connexion->update("SELECT TOP 10 article.id, article.nom, article.type_article FROM article INNER JOIN commande_article ON article.id = commande_article.id order by quantite asc);" );
 
     return this->id;
 }
 
 
+int Article::requete4() {
+
+    String^ tableName = Article::getTableName();
+    String^ tableName3 = Article::getTableName3();
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+
+    connexion->update("SELECT SUM(article.quantite_stock*palier_remise.prix_unitaire_ht) AS valeur_com_stock  FROM article INNER JOIN palier_remise ON article.id = palier_remise.id_article" + "); ");
+
+    return this->id;
+}
+
+
+int Article::requete5() {
+
+    String^ tableName = Article::getTableName();
+    String^ tableName3 = Article::getTableName3();
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+
+    connexion->update("SELECT SUM(((1+article.TVA_rate/100)*palier_remise.prix_unitaire_ht)*article.quantite_stock) AS valeur_achat_stock FROM article INNER JOIN palier_remise ON article.id = palier_remise.id_article" + "); ");
+
+    return this->id;
+}
+
+
+
+int Article::requete6() {
+    
+    String^ tableName2 = Article::getTableName2();
+    String^ tableName4 = Article::getTableName4();
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+
+    connexion->update("SELECT AVG(commande.total_ttc - commande_article.remise) AS panier_moyen FROM commande INNER JOIN commande_article on commande.id = commande_article.id"  );
+
+    return this->id;
+}
+
+
+/*
+int Article::requete7() {
+    String^ tableName4 = Article::getTableName4();
+    String^ tableName5 = Article::getTableName5();
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+
+    connexion->update("SELECT SUM(commande.total_ttc)" + "AS" + "total_client" + "FROM" + tableName5 +  "INNER JOIN" + tableName4 + "ON" + "client.id = commande.id_client" + "WHERE" + "client.nom = " + this->getNomChoisi() + "AND" + this->getPrenomChoisi() + ");"  );
+
+    return this->id;
+}
+
+int Article::requete8() {
+    
+    String^ tableName2 = Article::getTableName2();
+    String^ tableName4 = Article::getTableName4();
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+
+    connexion->update("SELECT SUM(total_ttc)" + "AS" + "chiffre_affaire" + "FROM" + tableName4 + "WHERE date_de_solde" + "BETWEEN" + this->date1Choisi() + "AND" + this->date2Choisi() + ");"  );
+
+    return this->id;
+}
+*/

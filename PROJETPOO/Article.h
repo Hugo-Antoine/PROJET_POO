@@ -5,6 +5,7 @@ using namespace System;
 
 ref class Article {
 private:
+    
     int id;
     String^ nom;
     String^ type_Article;
@@ -41,10 +42,16 @@ public:
     
     int requete1();
     int requete2();
-    
+    int requete3();
+    int requete4();
+    int requete5();
+    int requete6();
+    /*int requete7();
+    int requete8();*/
     int persist();
     static String^ getTableName();
-    
-
-
+    static String^ getTableName2();
+    static String^ getTableName3();
+    static String^ getTableName4();
+    static String^ getTableName5();
 };

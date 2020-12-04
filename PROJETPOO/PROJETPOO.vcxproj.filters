@@ -104,6 +104,9 @@
     <ClInclude Include="statForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Stat.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientForm.cpp">
@@ -166,11 +169,14 @@
     <ClCompile Include="CppCLR_WinformsProjekt.cpp">
       <Filter>Quelldateien\others</Filter>
     </ClCompile>
+    <ClCompile Include="Stat.cpp">
+      <Filter>Quelldateien\class</Filter>
+    </ClCompile>
     <ClCompile Include="article_commande_form.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Forms</Filter>
     </ClCompile>
     <ClCompile Include="statForm.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\Forms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
