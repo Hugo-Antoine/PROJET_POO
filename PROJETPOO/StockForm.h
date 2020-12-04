@@ -196,9 +196,9 @@ namespace PROJETPOO {
 			this->seuil_reapro->AutoSize = true;
 			this->seuil_reapro->Location = System::Drawing::Point(209, 514);
 			this->seuil_reapro->Name = L"seuil_reapro";
-			this->seuil_reapro->Size = System::Drawing::Size(148, 13);
+			this->seuil_reapro->Size = System::Drawing::Size(144, 13);
 			this->seuil_reapro->TabIndex = 9;
-			this->seuil_reapro->Text = L"seuil de réaprovitionennement";
+			this->seuil_reapro->Text = L"seuil de reapprovisionnement";
 			// 
 			// qmr
 			// 

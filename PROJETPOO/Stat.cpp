@@ -20,7 +20,7 @@ array<String^>^ Stat::GetR1()
 
 array<String^>^ Stat::GetR2()
 {
-    String^ tableName = "R2";
+    String^ tableName = "R2";      
     DataSet^ ds = connexion->getRows("SELECT TOP 10 article.nom FROM article INNER JOIN commande_article ON article.id = commande_article.id WHERE article.supprimer = 'false' order by quantite desc", tableName);
     int size = ds->Tables[tableName]->Rows->Count;
     array<String^>^ R2 = gcnew array<String^>(size);

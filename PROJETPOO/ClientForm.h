@@ -223,7 +223,7 @@ namespace PROJETPOO {
 			this->dpa->Name = L"dpa";
 			this->dpa->Size = System::Drawing::Size(110, 13);
 			this->dpa->TabIndex = 22;
-			this->dpa->Text = L"date de permier achat";
+			this->dpa->Text = L"date de premier achat";
 			// 
 			// ddn_pi
 			// 

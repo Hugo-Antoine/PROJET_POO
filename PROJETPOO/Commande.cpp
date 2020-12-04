@@ -195,7 +195,7 @@ int Commande::persist()
             ",date_de_solde = '" + this->getdds() + "' " +
             ",total_ht = '" + this->gettotalht() + "' " +
             ",total_ttc = '" + this->gettotalttc() + "' " +
-            ",id_adresse_cmd_fadresse_livraison = '" + this->getid_adresse_cmd_adresse_livraison() + "' " +
+            ",id_adresse_cmd_adresse_livraison = '" + this->getid_adresse_cmd_adresse_livraison() + "' " +
             ",id_client = '" + this->getidclient() + "' " +
             ",id_adresse_cmd_adresse_facturation = '" + this->getid_adresse_cmd_adresse_facturation() + "' " +
             ",supprimer = '" + this->getsuppr() +

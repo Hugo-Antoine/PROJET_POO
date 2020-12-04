@@ -336,6 +336,25 @@ private: System::Void CommandeForm_Load(System::Object^ sender, System::EventArg
 	this->Modifier->Show();
 	this->Supprimer->Show();
 
+	this->commandeData->ColumnCount = 9;
+	this->commandeData->Columns[0]->Name = "Reference";
+	this->commandeData->Columns[1]->Name = "Date de livraison";
+	this->commandeData->Columns[2]->Name = "Date d'émission";
+	this->commandeData->Columns[3]->Name = "Date de solde";
+	this->commandeData->Columns[4]->Name = "Total HT";
+	this->commandeData->Columns[5]->Name = "Total TTC";
+	this->commandeData->Columns[6]->Name = "Adresse Livraison";
+	this->commandeData->Columns[7]->Name = "Client";
+	this->commandeData->Columns[8]->Name = "Adresse Facturation";
+
+	commandeData->Rows->Clear();
+
+	array<Commande^>^ cmd = Commande::getCommandeActive();
+
+	for (int i = 0; i < cmd->Length; i++)
+	{
+		commandeData->Rows->Add(cmd[i]->getref(), cmd[i]->getddl(), cmd[i]->getde(), cmd[i]->getdds(), cmd[i]->gettotalht(), cmd[i]->gettotalttc(), cmd[i]->getid_adresse_cmd_adresse_livraison(), cmd[i]->getidclient(), cmd[i]->getid_adresse_cmd_adresse_facturation());
+	}
 }
 
 
@@ -433,6 +452,50 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	this->Ajouter->Show();
 	this->Modifier->Show();
 	this->Supprimer->Show();
+
+	double totalHt = 0;
+	double totalTTC = 0;
+
+	Commande^ c = gcnew Commande();
+
+
+	array<Commande^>^ cmd = Commande::getCommandeActive();
+	for (int i = 0; i < cmd->Length; i++) {
+		if (cmd[i]->getID() == idCmd) {
+			c = cmd[i];
+		}
+	}
+
+	Article^ a = gcnew Article();
+
+	array<Article^>^ at = Article::getArticleActif();
+
+	array<Commande_article^>^ cmd_at = Commande_article::getCommande_articleActive(idCmd);
+	for (int i = 0; i < cmd_at->Length; i++) {
+
+		for (int j = 0; j < at->Length; j++) {
+			if (at[j]->getID() == cmd_at[i]->getID_article()) {
+				a = at[j];
+			}
+		}
+
+		totalHt += cmd_at[i]->getQuantite() * cmd_at[i]->getPrixunitaire() * (1 - cmd_at[i]->getremise() / 100.0);
+		totalTTC += cmd_at[i]->getQuantite() * cmd_at[i]->getPrixunitaire() * (1 - cmd_at[i]->getremise() / 100.0) * (1 + a->getTVA() / 100.0);
+	}
+
+	c->settotalht(Convert::ToInt32(totalHt));
+	c->settotalttc(Convert::ToInt32(totalTTC));
+
+	c->persist();
+
+	commandeData->Rows->Clear();
+
+	array<Commande^>^ cmda = Commande::getCommandeActive();
+
+	for (int i = 0; i < cmda->Length; i++)
+	{
+		commandeData->Rows->Add(cmda[i]->getref(), cmda[i]->getddl(), cmda[i]->getde(), cmda[i]->getdds(), cmda[i]->gettotalht(), cmda[i]->gettotalttc(), cmda[i]->getid_adresse_cmd_adresse_livraison(), cmda[i]->getidclient(), cmda[i]->getid_adresse_cmd_adresse_facturation());
+	}
 
 }
 private: System::Void clientListe_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {

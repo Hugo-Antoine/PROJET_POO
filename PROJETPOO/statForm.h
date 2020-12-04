@@ -515,7 +515,8 @@ private: System::Void requete_list_SelectedIndexChanged(System::Object^ sender, 
 	case 7 :
 		this->client_cb->Show();
 		this->client->Show();
-	
+		this->client_cb->Items->Clear();
+
 		this->mois_cb->Hide();
 		this->mois->Hide();
 
@@ -540,6 +541,7 @@ private: System::Void requete_list_SelectedIndexChanged(System::Object^ sender, 
 
 		this->mois_cb->Show();
 		this->mois->Show();
+		this->mois_cb->Items->Clear();
 
 		this->TVA->Hide();
 		this->mc->Hide();

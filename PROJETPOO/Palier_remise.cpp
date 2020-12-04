@@ -8,6 +8,7 @@ Palier_Remise::Palier_Remise()
     this->q_mini = 0;
     this->p_u_ht = 0;
     this->id_article = 0;
+    this->suppr= false;
 }
 
 Palier_Remise::Palier_Remise(DataRow^ DR)
@@ -50,6 +51,15 @@ int Palier_Remise::getId_Article()
     return this->id_article;
 }
 
+void Palier_Remise::setSuppr(bool suppr)
+{
+    this->suppr = suppr;
+}
+bool Palier_Remise::getSuppr()
+{
+    return this->suppr;
+}
+
 
 array<Palier_Remise^>^ Palier_Remise::getPalier_Remise()
 {
@@ -58,6 +68,39 @@ array<Palier_Remise^>^ Palier_Remise::getPalier_Remise()
     //le DataSet contenant les personnes
     SQL_CMD^ connexion = gcnew SQL_CMD();
     DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + ";", tableName);
+
+    int size = ds->Tables[tableName]->Rows->Count;
+    array<Palier_Remise^>^ personnes = gcnew array<Palier_Remise^>(size);
+
+    //remplir le tableau personnes à partir des personnes récupérée dans DS.
+    for (int i = 0; i < size; i++)
+        personnes[i] = gcnew Palier_Remise(ds->Tables[tableName]->Rows[i]);
+    return personnes;
+}
+array<Palier_Remise^>^ Palier_Remise::getPalier_RemiseActif()
+{
+    String^ tableName = Palier_Remise::getTableName();
+    //Requête pour récupérer à partir de Sql Server 
+    //le DataSet contenant les personnes
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+    DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + " WHERE supprimer = 'false';", tableName);
+
+    int size = ds->Tables[tableName]->Rows->Count;
+    array<Palier_Remise^>^ personnes = gcnew array<Palier_Remise^>(size);
+
+    //remplir le tableau personnes à partir des personnes récupérée dans DS.
+    for (int i = 0; i < size; i++)
+        personnes[i] = gcnew Palier_Remise(ds->Tables[tableName]->Rows[i]);
+    return personnes;
+}
+
+array<Palier_Remise^>^ Palier_Remise::getPalier_RemiseActif(int id)
+{
+    String^ tableName = Palier_Remise::getTableName();
+    //Requête pour récupérer à partir de Sql Server 
+    //le DataSet contenant les personnes
+    SQL_CMD^ connexion = gcnew SQL_CMD();
+    DataSet^ ds = connexion->getRows("SELECT * FROM " + tableName + " WHERE supprimer = 'false' AND id_article = " + id + " ;", tableName);
 
     int size = ds->Tables[tableName]->Rows->Count;
     array<Palier_Remise^>^ personnes = gcnew array<Palier_Remise^>(size);
@@ -79,14 +122,14 @@ int Palier_Remise::persist()
     {
         //Insert
         this->id = connexion->insert("INSERT INTO " + tableName +
-            " VALUES('" + this->getQ_Mini() + "','" + this->getP_U_HT() + "','" + this->getId_Article() + "');SELECT @@IDENTITY;");
-        return this->id;
+            " VALUES('" + this->getQ_Mini() + "','" + this->getP_U_HT() + "','" + this->getId_Article() + "','" + this->getSuppr() + "');SELECT @@IDENTITY;");
     }
     else
     {
         //Update
         connexion->update("UPDATE " + tableName +
-            " SET quantite_mini = '" + this->getQ_Mini() + "' ,prix_unitaire_ht = '" + this->getP_U_HT() + "' ,id_article = '" + this->getId_Article() +
+            " SET quantite_mini = '" + this->getQ_Mini() + "' ,prix_unitaire_ht = '" + this->getP_U_HT() + "' ,id_article = '" + this->getId_Article() + "' ,supprimer = '" + this->getSuppr() +
             "' WHERE(id = " + this->getID() + ");");
     }
+    return this->id;
 }

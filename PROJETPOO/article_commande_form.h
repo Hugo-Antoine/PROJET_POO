@@ -1,6 +1,7 @@
 #pragma once
 #include "Article.h"
 #include "Commande_article.h"
+#include "Palier_remise.h"
 
 namespace PROJETPOO {
 
@@ -221,15 +222,11 @@ private: System::Void article_commande_form_Load(System::Object^ sender, System:
 	this->modifier->Show();
 	this->supprimer->Show();
 
-	this->articleCommandeData->ColumnCount = 8;
+	this->articleCommandeData->ColumnCount = 4;
 	this->articleCommandeData->Columns[0]->Name = "Nom";
 	this->articleCommandeData->Columns[1]->Name = "Type";
 	this->articleCommandeData->Columns[2]->Name = "TVA";
 	this->articleCommandeData->Columns[3]->Name = "Quantité";
-	this->articleCommandeData->Columns[4]->Name = "";
-	this->articleCommandeData->Columns[5]->Name = "";
-	this->articleCommandeData->Columns[6]->Name = "";
-	this->articleCommandeData->Columns[7]->Name = "";
 
 }
 
@@ -267,19 +264,27 @@ private: System::Void article_commande_form_Load(System::Object^ sender, System:
 		cmd_article->setID_commande(idCmd);
 		cmd_article->setQuantite(Convert::ToInt32(this->quantite_tb->Text));
 		cmd_article->setremise(Convert::ToInt32(this->remise_tb->Text));
-		Debug::Write(cmd_article->getSuppr());
+
+		array<Palier_Remise^>^ pr = Palier_Remise::getPalier_RemiseActif(Convert::ToInt32(a->getID()));
+
+		for (int i = 0; i < pr->Length-1; i++) {
+			if (pr[i]->getQ_Mini() <= cmd_article->getQuantite() && cmd_article->getQuantite() < pr[i + 1]->getQ_Mini()) {
+				cmd_article->setPrixunitaire(pr[i]->getP_U_HT());
+			}
+			else {
+				cmd_article->setPrixunitaire(pr[i + 1]->getP_U_HT());
+			}
+		}
 
 		cmd_article->persist();
 
-		Debug::Write(idCmd);
+
 
 		array<Commande_article^>^ cmd_article_tab = Commande_article::getCommande_articleActive(idCmd);
 
 		Commande_article^ current_art = nullptr;
 
 		Article^ art = nullptr;
-
-		Debug::Write(cmd_article_tab->Length);
 
 		for (int i = 0; i < cmd_article_tab->Length; i++)
 		{

@@ -1,6 +1,8 @@
 #pragma once
 #include "Personnel.h"
 #include "adresse.h"
+#include <ctime>
+#include <chrono>
 
 namespace PROJETPOO {
 
@@ -18,6 +20,7 @@ namespace PROJETPOO {
 	public ref class PersonnelForm : public System::Windows::Forms::Form
 	{
 	private: bool insert = false;
+	private: DateTime currentDate;
 	public:
 		PersonnelForm(void)
 		{
@@ -39,45 +42,27 @@ namespace PROJETPOO {
 			}
 		}
 	private: System::Windows::Forms::DataGridView^ personnelData;
-	protected:
-
-
 	private: System::Windows::Forms::Label^ Client;
 	private: System::Windows::Forms::Button^ Ajouter;
 	private: System::Windows::Forms::Button^ Modifier;
 	private: System::Windows::Forms::Button^ Supprimer;
 	private: System::Windows::Forms::TextBox^ nom_tb;
 	private: System::Windows::Forms::TextBox^ prenom_tb;
-
 	private: System::Windows::Forms::TextBox^ ligne1_tb;
-
 	private: System::Windows::Forms::Label^ nom;
 	private: System::Windows::Forms::Label^ prenom;
-
 	private: System::Windows::Forms::Label^ ligne1;
 	private: System::Windows::Forms::Button^ valider;
-
-
-
-
 	private: System::Windows::Forms::Label^ pays;
 	private: System::Windows::Forms::Label^ ville;
 	private: System::Windows::Forms::Label^ cp;
 	private: System::Windows::Forms::TextBox^ pays_tb;
 	private: System::Windows::Forms::TextBox^ ville_tb;
 	private: System::Windows::Forms::TextBox^ cp_tb;
-
 	private: System::Windows::Forms::ListBox^ SuperiorListe;
 	private: System::Windows::Forms::Label^ superieur;
 	private: System::Windows::Forms::DateTimePicker^ de_pi;
-
-
 	private: System::Windows::Forms::Label^ de;
-
-
-
-
-
 	private:
 		/// <summary>
 		/// Variable nécessaire au concepteur.
@@ -119,9 +104,10 @@ namespace PROJETPOO {
 			// personnelData
 			// 
 			this->personnelData->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->personnelData->Location = System::Drawing::Point(48, 52);
+			this->personnelData->Location = System::Drawing::Point(12, 52);
 			this->personnelData->Name = L"personnelData";
-			this->personnelData->Size = System::Drawing::Size(772, 391);
+			this->personnelData->ReadOnly = true;
+			this->personnelData->Size = System::Drawing::Size(831, 391);
 			this->personnelData->TabIndex = 0;
 			// 
 			// Client
@@ -362,6 +348,10 @@ namespace PROJETPOO {
 		this->superieur->Hide();
 		this->SuperiorListe->Hide();
 		this->valider->Hide();
+		this->Ajouter->Show();
+		this->Modifier->Show();
+		this->Supprimer->Show();
+		currentDate = this->de_pi->Value;
 
 		//
 		//On creer les colonnes de la table
@@ -432,7 +422,7 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 	this->pays_tb->Text = "";
 	this->ville_tb->Text = "";
 	this->cp_tb->Text = "";
-	//this->de_pi->Value = DateTime->Today;               SET le calendrier a la date d'aujourd'hui
+	this->de_pi->Value = currentDate;
 	this->SuperiorListe->SelectedIndex = 0;
 
 	//
@@ -470,6 +460,9 @@ private: System::Void Ajouter_Click(System::Object^ sender, System::EventArgs^ e
 	this->superieur->Show();
 	this->SuperiorListe->Show();
 	this->valider->Show();
+	this->Ajouter->Hide();
+	this->Modifier->Hide();
+	this->Supprimer->Hide();
 }
 
 
@@ -615,6 +608,9 @@ private: System::Void Modifier_Click(System::Object^ sender, System::EventArgs^ 
 	this->superieur->Show();
 	this->SuperiorListe->Show();
 	this->valider->Show();
+	this->Ajouter->Hide();
+	this->Modifier->Hide();
+	this->Supprimer->Hide();
 
 }
 
@@ -641,6 +637,22 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	this->superieur->Hide();
 	this->SuperiorListe->Hide();
 	this->valider->Hide();
+	this->Ajouter->Show();
+	this->Modifier->Show();
+	this->Supprimer->Show();
+
+	if (this->nom_tb->Text == "" || this->prenom_tb->Text == "" || this->ligne1_tb->Text == "" || this->pays_tb->Text == "" || this->cp_tb->Text == "" || this->ville_tb->Text == "") {
+		if (MessageBox::Show("Un ou plusieurs champ(s) n'a(ont) pas été completé(s)", "Champ(s) non completé(s)", MessageBoxButtons::OK, MessageBoxIcon::Error) == System::Windows::Forms::DialogResult::OK) {
+			return;
+		}
+	}
+
+	if (this->de_pi->Value > currentDate) {
+		if (MessageBox::Show("La date d'embache ne peut pas etre superieur à la date d'aujourd'hui", "Date Incorrect", MessageBoxButtons::OK, MessageBoxIcon::Error) == System::Windows::Forms::DialogResult::OK) {
+			return;
+		}
+	}
+
 
 	//
 	//on creer des objet adresse et personnel
@@ -680,8 +692,18 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	//si on est en update 	
 	if (!insert) 
 	{ 
-		int id = personnels[personnelData->CurrentRow->Index]->getID();
-		person->setID(id); 
+		if (MessageBox::Show("Voulez-vous vraiment Modifier ce Personnel ? ", "Modifier un Personnel", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+			int id = personnels[personnelData->CurrentRow->Index]->getID();
+			person->setID(id);
+		}
+		else
+			return;
+	}
+	else {
+		if (MessageBox::Show("Voulez-vous vraiment Ajouter ce Personnel ? ", "Ajouter un Personnel", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+		}
+		else
+			return;
 	}
 
 	person->setNom(Convert::ToString(this->nom_tb->Text));
@@ -689,7 +711,6 @@ private: System::Void valider_Click(System::Object^ sender, System::EventArgs^ e
 	person->setDe(Convert::ToString(this->de_pi->Value));
 	person->setIdAdresse(Convert::ToInt32(adr->persist()));
 	person->setIdPersonnel(Convert::ToInt32(idSup));
-
 
 	//
 	//on envoie sur la BDD
@@ -744,7 +765,15 @@ private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^
 	//on met dans p l'objet personnel du personnel en question
 	//
 
+	if (personnelsActif->Length == 0) {
+		if (MessageBox::Show("Suppression interdit. Il n'y a aucun personnel dans la Base De Données", "Supprimer un personnel", MessageBoxButtons::OK, MessageBoxIcon::Error) == System::Windows::Forms::DialogResult::OK) {
+			return;
+		}
+	}
+
+
 	int id = personnelsActif[personnelData->CurrentRow->Index]->getID();
+
 
 	//
 	//on check si le personnel est le superieur d'un autre personnel si oui on a pas le droit de le delete
@@ -753,10 +782,16 @@ private: System::Void Supprimer_Click(System::Object^ sender, System::EventArgs^
 	for (int i = 0; i < personnelsActif->Length; i++)
 	{
 		if (personnelsActif[i]->getIdPersonnel() == id) {
-			Debug::Write("pas le droit de suppr");
-			return;
+			if (MessageBox::Show("Suppression interdit. Ce personnel est le superieur d'un autre ", "Supprimer un personnel", MessageBoxButtons::OK, MessageBoxIcon::Error) == System::Windows::Forms::DialogResult::OK) {
+				return;
+			}	
 		}
 	}
+
+	if (MessageBox::Show("Voulez-vous vraiment Supprimer ce Personnel ? ", "Supprimer un Personnel", MessageBoxButtons::YesNo, MessageBoxIcon::Question) == System::Windows::Forms::DialogResult::Yes) {
+	}
+	else
+		return;
 
 	//
 	//On set pr a le personne selectionné
